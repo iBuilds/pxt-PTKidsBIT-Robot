@@ -1,1 +1,16 @@
-// tests go here; this will not be compiled when this package is used as an extension.
+PTKidsBIT.motorWrite(Motor_Write.Motor_1, 100)
+basic.pause(500)
+PTKidsBIT.motorWrite(Motor_Write.Motor_2, -100)
+basic.pause(500)
+PTKidsBIT.motorStop()
+basic.pause(500)
+PTKidsBIT.Turn(_Turn.Left, 100)
+basic.pause(500)
+PTKidsBIT.Spin(_Spin.Right, 100)
+basic.pause(500)
+PTKidsBIT.servoWrite(Servo_Write.P8, 180)
+basic.pause(500)
+PTKidsBIT.servoWrite(Servo_Write.P8, 90)
+basic.forever(function () {
+    basic.showNumber(PTKidsBIT.ADCRead(ADC_Read.ADC0))
+})
