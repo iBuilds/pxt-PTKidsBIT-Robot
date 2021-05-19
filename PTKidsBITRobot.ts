@@ -257,7 +257,7 @@ namespace PTKidsBITRobot {
     /**
      * Read Distance from Ultrasonic Sensor
      */
-    //% block="distanceRead"
+    //% block="GETDistance"
     export function distanceRead(): number {
         let duration
 
