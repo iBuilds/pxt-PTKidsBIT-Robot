@@ -5,6 +5,7 @@
  * generated for an **exported** function.
  */
 
+let Sensor_All_PIN = [0, 1, 2, 3, 4, 5]
 let Sensor_PIN = [1, 2, 3, 4]
 let Sensor_Left = [0]
 let Sensor_Right = [5]
@@ -13,6 +14,8 @@ let LED_PIN = 0
 
 let Line_LOW = [0, 0, 0, 0, 0, 0, 0, 0]
 let Line_HIGH = [0, 0, 0, 0, 0, 0, 0, 0]
+let Color_Line_All: number[] = []
+let Color_Background_All: number[] = []
 let Color_Line: number[] = []
 let Color_Background: number[] = []
 let Color_Line_Left: number[] = []
@@ -313,7 +316,7 @@ namespace PTKidsBITRobot {
         while (1) {
             on_line = 0
             for (let i = 0; i < Sensor_PIN.length; i ++) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 500) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= 500) {
                     on_line += 1;
                 }
             }
@@ -331,7 +334,7 @@ namespace PTKidsBITRobot {
         }
         timer = control.millis()
         while (1) {
-            if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
+            if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
                 motorStop()
                 break
             }
@@ -687,6 +690,9 @@ namespace PTKidsBITRobot {
             Color_Line_Right[i] = Line_HIGH[Sensor_Right[i]]
             Color_Background_Right[i] = Line_LOW[Sensor_Right[i]]
         }
+
+        Color_Line_All = [Color_Line_Left[0], Color_Line[0], Color_Line[1], Color_Line[2], Color_Line[3], Color_Line_Right[0]]
+        Color_Background_All = [Color_Background_Left[0], Color_Background[0], Color_Background[1], Color_Background[2], Color_Background[3], Color_Background_Right[0]]
 
         music.playTone(784, music.beat(BeatFraction.Quarter))
         music.playTone(587, music.beat(BeatFraction.Quarter))
