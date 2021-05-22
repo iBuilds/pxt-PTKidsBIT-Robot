@@ -130,17 +130,19 @@ namespace PTKidsBITRobot {
     export function Spin(spin: _Spin, speed: number): void {
         speed = pins.map(speed, 0, 100, 0, 1023)
         
-        if (spin == _Spin.Left) {
-            pins.digitalWritePin(DigitalPin.P13, 1)
-            pins.analogWritePin(AnalogPin.P14, speed)
-            pins.digitalWritePin(DigitalPin.P15, 0)
-            pins.analogWritePin(AnalogPin.P16, speed)
-        }
-        else if (spin == _Spin.Right) {
-            pins.digitalWritePin(DigitalPin.P13, 0)
-            pins.analogWritePin(AnalogPin.P14, speed)
-            pins.digitalWritePin(DigitalPin.P15, 1)
-            pins.analogWritePin(AnalogPin.P16, speed)
+        if (Calibrate_Status == 1) {
+            if (spin == _Spin.Left) {
+                pins.digitalWritePin(DigitalPin.P13, 1)
+                pins.analogWritePin(AnalogPin.P14, speed)
+                pins.digitalWritePin(DigitalPin.P15, 0)
+                pins.analogWritePin(AnalogPin.P16, speed)
+            }
+            else if (spin == _Spin.Right) {
+                pins.digitalWritePin(DigitalPin.P13, 0)
+                pins.analogWritePin(AnalogPin.P14, speed)
+                pins.digitalWritePin(DigitalPin.P15, 1)
+                pins.analogWritePin(AnalogPin.P16, speed)
+            }
         }
     }
 
@@ -153,17 +155,19 @@ namespace PTKidsBITRobot {
     export function Turn(turn: _Turn, speed: number): void {
         speed = pins.map(speed, 0, 100, 0, 1023)
         
-        if (turn == _Turn.Left) {
-            pins.digitalWritePin(DigitalPin.P13, 1)
-            pins.analogWritePin(AnalogPin.P14, 0)
-            pins.digitalWritePin(DigitalPin.P15, 0)
-            pins.analogWritePin(AnalogPin.P16, speed)
-        }
-        else if (turn == _Turn.Right) {
-            pins.digitalWritePin(DigitalPin.P13, 0)
-            pins.analogWritePin(AnalogPin.P14, speed)
-            pins.digitalWritePin(DigitalPin.P15, 1)
-            pins.analogWritePin(AnalogPin.P16, 0)
+        if (Calibrate_Status == 1) {
+            if (turn == _Turn.Left) {
+                pins.digitalWritePin(DigitalPin.P13, 1)
+                pins.analogWritePin(AnalogPin.P14, 0)
+                pins.digitalWritePin(DigitalPin.P15, 0)
+                pins.analogWritePin(AnalogPin.P16, speed)
+            }
+            else if (turn == _Turn.Right) {
+                pins.digitalWritePin(DigitalPin.P13, 0)
+                pins.analogWritePin(AnalogPin.P14, speed)
+                pins.digitalWritePin(DigitalPin.P15, 1)
+                pins.analogWritePin(AnalogPin.P16, 0)
+            }
         }
     }
 
@@ -178,22 +182,24 @@ namespace PTKidsBITRobot {
         speed1 = pins.map(speed1, -100, 100, -1023, 1023)
         speed2 = pins.map(speed2, -100, 100, -1023, 1023)
 
-        if (speed1 < 0) {
-            pins.digitalWritePin(DigitalPin.P13, 1)
-            pins.analogWritePin(AnalogPin.P14, -speed1)
-        }
-        else if (speed1 >= 0) {
-            pins.digitalWritePin(DigitalPin.P13, 0)
-            pins.analogWritePin(AnalogPin.P14, speed1)
-        }
+        if (Calibrate_Status == 1) {
+            if (speed1 < 0) {
+                pins.digitalWritePin(DigitalPin.P13, 1)
+                pins.analogWritePin(AnalogPin.P14, -speed1)
+            }
+            else if (speed1 >= 0) {
+                pins.digitalWritePin(DigitalPin.P13, 0)
+                pins.analogWritePin(AnalogPin.P14, speed1)
+            }
 
-        if (speed2 < 0) {
-            pins.digitalWritePin(DigitalPin.P15, 1)
-            pins.analogWritePin(AnalogPin.P16, -speed2)
-        }
-        else if (speed2 >= 0) {
-            pins.digitalWritePin(DigitalPin.P15, 0)
-            pins.analogWritePin(AnalogPin.P16, speed2)
+            if (speed2 < 0) {
+                pins.digitalWritePin(DigitalPin.P15, 1)
+                pins.analogWritePin(AnalogPin.P16, -speed2)
+            }
+            else if (speed2 >= 0) {
+                pins.digitalWritePin(DigitalPin.P15, 0)
+                pins.analogWritePin(AnalogPin.P16, speed2)
+            }
         }
     }
 
@@ -206,24 +212,26 @@ namespace PTKidsBITRobot {
     export function motorWrite(motor: Motor_Write, speed: number): void {
         speed = pins.map(speed, -100, 100, -1023, 1023)
         
-        if (motor == Motor_Write.Motor_Left) {
-            if (speed < 0) {
-                pins.digitalWritePin(DigitalPin.P13, 1)
-                pins.analogWritePin(AnalogPin.P14, -speed)
+        if (Calibrate_Status == 1) {
+            if (motor == Motor_Write.Motor_Left) {
+                if (speed < 0) {
+                    pins.digitalWritePin(DigitalPin.P13, 1)
+                    pins.analogWritePin(AnalogPin.P14, -speed)
+                }
+                else if (speed >= 0) {
+                    pins.digitalWritePin(DigitalPin.P13, 0)
+                    pins.analogWritePin(AnalogPin.P14, speed)
+                }
             }
-            else if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P13, 0)
-                pins.analogWritePin(AnalogPin.P14, speed)
-            }
-        }
-        else if (motor == Motor_Write.Motor_Right) {
-            if (speed < 0) {
-                pins.digitalWritePin(DigitalPin.P15, 1)
-                pins.analogWritePin(AnalogPin.P16, -speed)
-            }
-            else if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P15, 0)
-                pins.analogWritePin(AnalogPin.P16, speed)
+            else if (motor == Motor_Write.Motor_Right) {
+                if (speed < 0) {
+                    pins.digitalWritePin(DigitalPin.P15, 1)
+                    pins.analogWritePin(AnalogPin.P16, -speed)
+                }
+                else if (speed >= 0) {
+                    pins.digitalWritePin(DigitalPin.P15, 0)
+                    pins.analogWritePin(AnalogPin.P16, speed)
+                }
             }
         }
     }
@@ -315,7 +323,7 @@ namespace PTKidsBITRobot {
             while (1) {
                 on_line = 0
                 for (let i = 0; i < Sensor_PIN.length; i ++) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 800) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 500) {
                         on_line += 1;
                     }
                 }
