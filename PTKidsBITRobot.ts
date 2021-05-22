@@ -19,7 +19,6 @@ let Color_Line_Left: number[] = []
 let Color_Background_Left: number[] = []
 let Color_Line_Right: number[] = []
 let Color_Background_Right: number[] = []
-let Calibrate_Status = 0
 let Line_Mode = 0
 let Last_Position = 0
 let error = 0
@@ -130,19 +129,17 @@ namespace PTKidsBITRobot {
     export function Spin(spin: _Spin, speed: number): void {
         speed = pins.map(speed, 0, 100, 0, 1023)
         
-        if (Calibrate_Status == 1) {
-            if (spin == _Spin.Left) {
-                pins.digitalWritePin(DigitalPin.P13, 1)
-                pins.analogWritePin(AnalogPin.P14, speed)
-                pins.digitalWritePin(DigitalPin.P15, 0)
-                pins.analogWritePin(AnalogPin.P16, speed)
-            }
-            else if (spin == _Spin.Right) {
-                pins.digitalWritePin(DigitalPin.P13, 0)
-                pins.analogWritePin(AnalogPin.P14, speed)
-                pins.digitalWritePin(DigitalPin.P15, 1)
-                pins.analogWritePin(AnalogPin.P16, speed)
-            }
+        if (spin == _Spin.Left) {
+            pins.digitalWritePin(DigitalPin.P13, 1)
+            pins.analogWritePin(AnalogPin.P14, speed)
+            pins.digitalWritePin(DigitalPin.P15, 0)
+            pins.analogWritePin(AnalogPin.P16, speed)
+        }
+        else if (spin == _Spin.Right) {
+            pins.digitalWritePin(DigitalPin.P13, 0)
+            pins.analogWritePin(AnalogPin.P14, speed)
+            pins.digitalWritePin(DigitalPin.P15, 1)
+            pins.analogWritePin(AnalogPin.P16, speed)
         }
     }
 
@@ -154,20 +151,18 @@ namespace PTKidsBITRobot {
     //% speed.min=0 speed.max=100
     export function Turn(turn: _Turn, speed: number): void {
         speed = pins.map(speed, 0, 100, 0, 1023)
-        
-        if (Calibrate_Status == 1) {
-            if (turn == _Turn.Left) {
-                pins.digitalWritePin(DigitalPin.P13, 1)
-                pins.analogWritePin(AnalogPin.P14, 0)
-                pins.digitalWritePin(DigitalPin.P15, 0)
-                pins.analogWritePin(AnalogPin.P16, speed)
-            }
-            else if (turn == _Turn.Right) {
-                pins.digitalWritePin(DigitalPin.P13, 0)
-                pins.analogWritePin(AnalogPin.P14, speed)
-                pins.digitalWritePin(DigitalPin.P15, 1)
-                pins.analogWritePin(AnalogPin.P16, 0)
-            }
+
+        if (turn == _Turn.Left) {
+            pins.digitalWritePin(DigitalPin.P13, 1)
+            pins.analogWritePin(AnalogPin.P14, 0)
+            pins.digitalWritePin(DigitalPin.P15, 0)
+            pins.analogWritePin(AnalogPin.P16, speed)
+        }
+        else if (turn == _Turn.Right) {
+            pins.digitalWritePin(DigitalPin.P13, 0)
+            pins.analogWritePin(AnalogPin.P14, speed)
+            pins.digitalWritePin(DigitalPin.P15, 1)
+            pins.analogWritePin(AnalogPin.P16, 0)
         }
     }
 
@@ -182,24 +177,22 @@ namespace PTKidsBITRobot {
         speed1 = pins.map(speed1, -100, 100, -1023, 1023)
         speed2 = pins.map(speed2, -100, 100, -1023, 1023)
 
-        if (Calibrate_Status == 1) {
-            if (speed1 < 0) {
-                pins.digitalWritePin(DigitalPin.P13, 1)
-                pins.analogWritePin(AnalogPin.P14, -speed1)
-            }
-            else if (speed1 >= 0) {
-                pins.digitalWritePin(DigitalPin.P13, 0)
-                pins.analogWritePin(AnalogPin.P14, speed1)
-            }
+        if (speed1 < 0) {
+            pins.digitalWritePin(DigitalPin.P13, 1)
+            pins.analogWritePin(AnalogPin.P14, -speed1)
+        }
+        else if (speed1 >= 0) {
+            pins.digitalWritePin(DigitalPin.P13, 0)
+            pins.analogWritePin(AnalogPin.P14, speed1)
+        }
 
-            if (speed2 < 0) {
-                pins.digitalWritePin(DigitalPin.P15, 1)
-                pins.analogWritePin(AnalogPin.P16, -speed2)
-            }
-            else if (speed2 >= 0) {
-                pins.digitalWritePin(DigitalPin.P15, 0)
-                pins.analogWritePin(AnalogPin.P16, speed2)
-            }
+        if (speed2 < 0) {
+            pins.digitalWritePin(DigitalPin.P15, 1)
+            pins.analogWritePin(AnalogPin.P16, -speed2)
+        }
+        else if (speed2 >= 0) {
+            pins.digitalWritePin(DigitalPin.P15, 0)
+            pins.analogWritePin(AnalogPin.P16, speed2)
         }
     }
 
@@ -212,26 +205,24 @@ namespace PTKidsBITRobot {
     export function motorWrite(motor: Motor_Write, speed: number): void {
         speed = pins.map(speed, -100, 100, -1023, 1023)
         
-        if (Calibrate_Status == 1) {
-            if (motor == Motor_Write.Motor_Left) {
-                if (speed < 0) {
-                    pins.digitalWritePin(DigitalPin.P13, 1)
-                    pins.analogWritePin(AnalogPin.P14, -speed)
-                }
-                else if (speed >= 0) {
-                    pins.digitalWritePin(DigitalPin.P13, 0)
-                    pins.analogWritePin(AnalogPin.P14, speed)
-                }
+        if (motor == Motor_Write.Motor_Left) {
+            if (speed < 0) {
+                pins.digitalWritePin(DigitalPin.P13, 1)
+                pins.analogWritePin(AnalogPin.P14, -speed)
             }
-            else if (motor == Motor_Write.Motor_Right) {
-                if (speed < 0) {
-                    pins.digitalWritePin(DigitalPin.P15, 1)
-                    pins.analogWritePin(AnalogPin.P16, -speed)
-                }
-                else if (speed >= 0) {
-                    pins.digitalWritePin(DigitalPin.P15, 0)
-                    pins.analogWritePin(AnalogPin.P16, speed)
-                }
+            else if (speed >= 0) {
+                pins.digitalWritePin(DigitalPin.P13, 0)
+                pins.analogWritePin(AnalogPin.P14, speed)
+            }
+        }
+        else if (motor == Motor_Write.Motor_Right) {
+            if (speed < 0) {
+                pins.digitalWritePin(DigitalPin.P15, 1)
+                pins.analogWritePin(AnalogPin.P16, -speed)
+            }
+            else if (speed >= 0) {
+                pins.digitalWritePin(DigitalPin.P15, 0)
+                pins.analogWritePin(AnalogPin.P16, speed)
             }
         }
     }
@@ -319,49 +310,47 @@ namespace PTKidsBITRobot {
         let motor_speed = 0
         let motor_slow = Math.round(speed / 4)
 
-        if (Calibrate_Status == 1) {
-            while (1) {
-                on_line = 0
-                for (let i = 0; i < Sensor_PIN.length; i ++) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 500) {
-                        on_line += 1;
-                    }
+        while (1) {
+            on_line = 0
+            for (let i = 0; i < Sensor_PIN.length; i ++) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 500) {
+                    on_line += 1;
                 }
+            }
 
-                if (on_line == 0) {
-                    break
+            if (on_line == 0) {
+                break
+            }
+
+            if (turn == Turn_Line.Left) {
+                motorGo(-speed, speed)
+            }
+            else if (turn == Turn_Line.Right) {
+                motorGo(speed, -speed)
+            }
+        }
+        timer = control.millis()
+        while (1) {
+            if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
+                motorStop()
+                break
+            }
+            else {
+                error = timer - (control.millis() - time)
+                motor_speed = error
+
+                if (motor_speed > 100) {
+                    motor_speed = 100
+                }
+                else if (motor_speed < 0) {
+                    motor_speed = motor_slow
                 }
 
                 if (turn == Turn_Line.Left) {
-                    motorGo(-speed, speed)
+                    motorGo(-motor_speed, motor_speed)
                 }
                 else if (turn == Turn_Line.Right) {
-                    motorGo(speed, -speed)
-                }
-            }
-            timer = control.millis()
-            while (1) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
-                    motorStop()
-                    break
-                }
-                else {
-                    error = timer - (control.millis() - time)
-                    motor_speed = error
-
-                    if (motor_speed > 100) {
-                        motor_speed = 100
-                    }
-                    else if (motor_speed < 0) {
-                        motor_speed = motor_slow
-                    }
-
-                    if (turn == Turn_Line.Left) {
-                        motorGo(-motor_speed, motor_speed)
-                    }
-                    else if (turn == Turn_Line.Right) {
-                        motorGo(motor_speed, -motor_speed)
-                    }
+                    motorGo(motor_speed, -motor_speed)
                 }
             }
         }
@@ -379,35 +368,33 @@ namespace PTKidsBITRobot {
     export function ForwardTIME(time: number, min_speed: number, max_speed: number, kp: number, kd: number) {
         let timer = control.millis()
 
-        if (Calibrate_Status == 1) {
-            while (control.millis() - timer < time) {
-                error = GETPosition() - (((Num_Sensor - 1) * 1000) / 2)
-                P = error
-                D = error - previous_error
-                PD_Value = (kp * P) + (kd * D)
-                previous_error = error
+        while (control.millis() - timer < time) {
+            error = GETPosition() - (((Num_Sensor - 1) * 1000) / 2)
+            P = error
+            D = error - previous_error
+            PD_Value = (kp * P) + (kd * D)
+            previous_error = error
 
-                left_motor_speed = min_speed - PD_Value
-                right_motor_speed = min_speed + PD_Value
+            left_motor_speed = min_speed - PD_Value
+            right_motor_speed = min_speed + PD_Value
 
-                if (left_motor_speed > max_speed) {
-                    left_motor_speed = max_speed
-                }
-                else if (left_motor_speed < -max_speed) {
-                    left_motor_speed = -max_speed
-                }
-
-                if (right_motor_speed > max_speed) {
-                    right_motor_speed = max_speed
-                }
-                else if (right_motor_speed < -max_speed) {
-                    right_motor_speed = -max_speed
-                }
-
-                motorGo(left_motor_speed, right_motor_speed)
+            if (left_motor_speed > max_speed) {
+                left_motor_speed = max_speed
             }
-            motorStop()
+            else if (left_motor_speed < -max_speed) {
+                left_motor_speed = -max_speed
+            }
+
+            if (right_motor_speed > max_speed) {
+                right_motor_speed = max_speed
+            }
+            else if (right_motor_speed < -max_speed) {
+                right_motor_speed = -max_speed
+            }
+
+            motorGo(left_motor_speed, right_motor_speed)
         }
+        motorStop()
     }
 
     //% group="Line Follower"
@@ -438,134 +425,132 @@ namespace PTKidsBITRobot {
         let on_line = 0
         let on_line_LR = 0
 
-        if (Calibrate_Status == 1) {
-            while (1) {
-                found_left = 0
-                found_right = 0
-                on_line = 0
-                on_line_LR = 0
-                for (let i = 0; i < Sensor_PIN.length; i ++) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 800) {
-                        on_line += 1;
-                    }
+        while (1) {
+            found_left = 0
+            found_right = 0
+            on_line = 0
+            on_line_LR = 0
+            for (let i = 0; i < Sensor_PIN.length; i ++) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 800) {
+                    on_line += 1;
+                }
+            }
+
+            for (let i = 0; i < Sensor_Left.length; i ++) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 800) {
+                    on_line_LR += 1;
+                }
+            }
+
+            for (let i = 0; i < Sensor_Right.length; i ++) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 800) {
+                    on_line_LR += 1;
+                }
+            }
+
+            if (on_line > 0 && on_line <= 2 && on_line_LR == 0) {
+                error = GETPosition() - (((Num_Sensor - 1) * 1000) / 2)
+                P = error
+                D = error - previous_error
+                PD_Value = (kp * P) + (kd * D)
+                previous_error = error
+
+                left_motor_speed = min_speed - PD_Value
+                right_motor_speed = min_speed + PD_Value
+
+                if (left_motor_speed > max_speed) {
+                    left_motor_speed = max_speed
+                }
+                else if (left_motor_speed < -max_speed) {
+                    left_motor_speed = -max_speed
                 }
 
+                if (right_motor_speed > max_speed) {
+                    right_motor_speed = max_speed
+                }
+                else if (right_motor_speed < -max_speed) {
+                    right_motor_speed = -max_speed
+                }
+
+                motorGo(left_motor_speed, right_motor_speed)
+            }
+            else {
+                motorGo(min_speed, min_speed)
+            }
+            
+            if (line_state == 0) {
                 for (let i = 0; i < Sensor_Left.length; i ++) {
                     if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 800) {
-                        on_line_LR += 1;
+                        found_left += 1;
                     }
                 }
 
                 for (let i = 0; i < Sensor_Right.length; i ++) {
                     if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 800) {
-                        on_line_LR += 1;
+                        found_right += 1;
                     }
                 }
 
-                if (on_line > 0 && on_line <= 2 && on_line_LR == 0) {
-                    error = GETPosition() - (((Num_Sensor - 1) * 1000) / 2)
-                    P = error
-                    D = error - previous_error
-                    PD_Value = (kp * P) + (kd * D)
-                    previous_error = error
-
-                    left_motor_speed = min_speed - PD_Value
-                    right_motor_speed = min_speed + PD_Value
-
-                    if (left_motor_speed > max_speed) {
-                        left_motor_speed = max_speed
-                    }
-                    else if (left_motor_speed < -max_speed) {
-                        left_motor_speed = -max_speed
-                    }
-
-                    if (right_motor_speed > max_speed) {
-                        right_motor_speed = max_speed
-                    }
-                    else if (right_motor_speed < -max_speed) {
-                        right_motor_speed = -max_speed
-                    }
-
-                    motorGo(left_motor_speed, right_motor_speed)
+                if (found_left == Sensor_Left.length || found_right == Sensor_Right.length) {
+                    line_state = 1
                 }
-                else {
-                    motorGo(min_speed, min_speed)
-                }
-                
-                if (line_state == 0) {
-                    for (let i = 0; i < Sensor_Left.length; i ++) {
-                        if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 800) {
-                            found_left += 1;
+            }
+            else if (line_state == 1) {
+                for (let i = 0; i < Sensor_Left.length; i ++) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 800) {
+                        found_left += 1;
+                        if (last_left != Sensor_Left.length) {
+                            last_left = found_left
                         }
-                    }
-
-                    for (let i = 0; i < Sensor_Right.length; i ++) {
-                        if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 800) {
-                            found_right += 1;
-                        }
-                    }
-
-                    if (found_left == Sensor_Left.length || found_right == Sensor_Right.length) {
-                        line_state = 1
-                    }
-                }
-                else if (line_state == 1) {
-                    for (let i = 0; i < Sensor_Left.length; i ++) {
-                        if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 800) {
-                            found_left += 1;
-                            if (last_left != Sensor_Left.length) {
-                                last_left = found_left
-                            }
-                        }
-                    }
-
-                    for (let i = 0; i < Sensor_Right.length; i ++) {
-                        if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 800) {
-                            found_right += 1;
-                            if (last_right != Sensor_Right.length) {
-                                last_right = found_right
-                            }
-                        }
-                    }
-
-                    if (found_left != Sensor_Left.length && found_right != Sensor_Right.length) {
-                        line_state = 2
                     }
                 }
 
-                else if (line_state == 2) {
-                    if (find == Find_Line.Left) {
-                        if (last_left == Sensor_Left.length && last_right != Sensor_Right.length) {
-                            motorStop()
-                            break
-                        }
-                        else {
-                            last_left = 0
-                            last_right = 0
-                            line_state = 0
+                for (let i = 0; i < Sensor_Right.length; i ++) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 800) {
+                        found_right += 1;
+                        if (last_right != Sensor_Right.length) {
+                            last_right = found_right
                         }
                     }
-                    else if (find == Find_Line.Center) {
-                        if (last_left == Sensor_Left.length && last_right == Sensor_Right.length) {
-                            motorStop()
-                            break
-                        }
-                        else {
-                            last_left = 0
-                            last_right = 0
-                            line_state = 0
-                        }
+                }
+
+                if (found_left != Sensor_Left.length && found_right != Sensor_Right.length) {
+                    line_state = 2
+                }
+            }
+
+            else if (line_state == 2) {
+                if (find == Find_Line.Left) {
+                    if (last_left == Sensor_Left.length && last_right != Sensor_Right.length) {
+                        motorStop()
+                        break
                     }
-                    else if (find == Find_Line.Right) {
-                        if (last_left != Sensor_Left.length && last_right == Sensor_Right.length) {
-                            motorStop()
-                            break
-                        }
-                        else {
-                            last_left = 0
-                            last_right = 0
-                            line_state = 0
-                        }
+                    else {
+                        last_left = 0
+                        last_right = 0
+                        line_state = 0
+                    }
+                }
+                else if (find == Find_Line.Center) {
+                    if (last_left == Sensor_Left.length && last_right == Sensor_Right.length) {
+                        motorStop()
+                        break
+                    }
+                    else {
+                        last_left = 0
+                        last_right = 0
+                        line_state = 0
+                    }
+                }
+                else if (find == Find_Line.Right) {
+                    if (last_left != Sensor_Left.length && last_right == Sensor_Right.length) {
+                        motorStop()
+                        break
+                    }
+                    else {
+                        last_left = 0
+                        last_right = 0
+                        line_state = 0
                     }
                 }
             }
@@ -703,7 +688,6 @@ namespace PTKidsBITRobot {
             Color_Background_Right[i] = Line_LOW[Sensor_Right[i]]
         }
 
-        Calibrate_Status = 1
         music.playTone(784, music.beat(BeatFraction.Quarter))
         music.playTone(587, music.beat(BeatFraction.Quarter))
     }
