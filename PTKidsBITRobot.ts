@@ -562,6 +562,40 @@ namespace PTKidsBITRobot {
 
     //% group="Line Follower"
     /**
+     * Basic Line Follower
+     */
+    //% block="Min Speed %base_speed|Max Speed %max_speed|KP %kp|KD %kd"
+    //% min_speed.min=0 min_speed.max=100
+    //% max_speed.min=0 max_speed.max=100
+    export function Follower(min_speed: number, max_speed: number, kp: number, kd: number) {
+        error = GETPosition() - (((Num_Sensor - 1) * 1000) / 2)
+        P = error
+        D = error - previous_error
+        PD_Value = (kp * P) + (kd * D)
+        previous_error = error
+
+        left_motor_speed = min_speed - PD_Value
+        right_motor_speed = min_speed + PD_Value
+
+        if (left_motor_speed > max_speed) {
+            left_motor_speed = max_speed
+        }
+        else if (left_motor_speed < -max_speed) {
+            left_motor_speed = -max_speed
+        }
+
+        if (right_motor_speed > max_speed) {
+            right_motor_speed = max_speed
+        }
+        else if (right_motor_speed < -max_speed) {
+            right_motor_speed = -max_speed
+        }
+
+        motorGo(left_motor_speed, right_motor_speed)
+    }
+
+    //% group="Line Follower"
+    /**
      * Get Position Line
      */
     //% block="GETPosition"
