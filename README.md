@@ -1,4 +1,5 @@
 # PTKidsBIT Robot block package for PT-BOT KidsBIT Robot kit
+The PTKidsBIT controller board support the micro: bit microcontroller. The Microsoft Programming Experience Toolkit or Microsoft PXT Block Editor, JavaScript and Python software is recommended. PTKidsBIT suitable for learn robot programming basics.
 
 powered by micro:bit
 
