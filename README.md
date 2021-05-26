@@ -11,7 +11,7 @@ The package adds support [PTKidsBIT](http://www.ptbot-shop.com/product/31/ptkids
 
 ## Line Follower Robot
 
-[![Line Follower Robot](https://img.youtube.com/vi/yK4SOhKdycs/0.jpg)](https://www.youtube.com/watch?v=yK4SOhKdycs)
+[![Line Follower Robot](https://raw.githubusercontent.com/iBuilds/pxt-PTKidsBIT-Robot/master/youtube_image.png)](https://www.youtube.com/watch?v=yK4SOhKdycs)
 
 ## micro:bit Pin Assignment
 
