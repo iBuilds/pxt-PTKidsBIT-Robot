@@ -1,8 +1,9 @@
 # PTKidsBIT Robot block package for PT-BOT KidsBIT Robot kit
-The PTKidsBIT Robot support the micro: bit microcontroller. The Microsoft Programming Experience Toolkit or Microsoft PXT Block Editor, JavaScript and Python software is recommended. PTKidsBIT Equipped with line follower sensor and ultrasonic sensor. suitable for learn robot programming basics. such as 
-line follower robot, control the robot via smartphone, etc. Therefore, it can be used as well in the lesson.
 
 powered by micro:bit
+
+The PTKidsBIT Robot support the micro: bit microcontroller. The Microsoft Programming Experience Toolkit or Microsoft PXT Block Editor, JavaScript and Python software is recommended. PTKidsBIT Equipped with line follower sensor and ultrasonic sensor. suitable for learn robot programming basics. such as 
+line follower robot, control the robot via smartphone, etc. Therefore, it can be used as well in the lesson.
 
 ![PTKidsBIT](https://raw.githubusercontent.com/iBuilds/pxt-PTKidsBIT-Robot/master/big_icon.png)
 
