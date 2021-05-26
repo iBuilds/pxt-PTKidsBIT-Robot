@@ -7,6 +7,8 @@ line follower robot, control the robot via smartphone, etc. Therefore, it can be
 
 ![PTKidsBIT](https://raw.githubusercontent.com/iBuilds/pxt-PTKidsBIT-Robot/master/big_icon.png)
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/yK4SOhKdycs/0.jpg)](https://www.youtube.com/watch?v=yK4SOhKdycs)
+
 The package adds support [PTKidsBIT](http://www.ptbot-shop.com/product/31/ptkidsbit-education-robot-kit) board from [PT-BOT](https://web.facebook.com/LPRobotics).
 
 ## micro:bit Pin Assignment
