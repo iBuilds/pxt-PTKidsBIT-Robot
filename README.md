@@ -2,12 +2,10 @@
 
 powered by micro:bit
 
-The PTKidsBIT Robot support the micro: bit microcontroller. The Microsoft Programming Experience Toolkit or Microsoft PXT Block Editor, JavaScript and Python software is recommended. PTKidsBIT Equipped with line follower sensor and ultrasonic sensor. suitable for learn robot programming basics. such as 
-line follower robot, control the robot via smartphone, etc. Therefore, it can be used as well in the lesson.
+The [PTKidsBIT](http://www.ptbot-shop.com/product/31/ptkidsbit-education-robot-kit) robot from [PT-BOT](https://web.facebook.com/LPRobotics) supports the micro:bit microcontroller. PTKidsBIT is equipped with a line following sensor and ultrasonic sensor. It is suitable for learning the basics of robotic programming, such as making a line follower robot and controling a robot via smartphone.
 
 ![PTKidsBIT](https://raw.githubusercontent.com/iBuilds/pxt-PTKidsBIT-Robot/master/big_icon.png)
 
-The package adds support [PTKidsBIT](http://www.ptbot-shop.com/product/31/ptkidsbit-education-robot-kit) board from [PT-BOT](https://web.facebook.com/LPRobotics).
 
 ## Line Follower Robot
 
@@ -33,7 +31,7 @@ The package adds support [PTKidsBIT](http://www.ptbot-shop.com/product/31/ptkids
 
 Use PTKidsBITRobot's MotorWrite block to drives 1 motor forward and backward. The speed motor is adjustable between 0 to 100.
 
-* The motor must be select either `Left` or `Right`
+* The motor must be set as either `Left` or `Right`
 * Speed is an integer value between `-100` to `100` (Greater than 0 is forward, less than 0 is backward)
 
 ```blocks
@@ -42,7 +40,7 @@ PTKidsBITRobot.motorWrite(Motor_Write.Motor_Left, 50)
 
 ### motorGo Block
 
-Use PTKidsBITRobot's motorGo block to drives 2 motor forward and backward. The speed motor is adjustable between 0 to 100.
+Use PTKidsBITRobot's motorGo block to drive 2 motors forward and backward. The speed motor is adjustable between 0 to 100.
 
 * The Motor Left must be select `-100` to `100` (Greater than 0 is forward, less than 0 is backward)
 * The Motor Left must be select `-100` to `100` (Greater than 0 is forward, less than 0 is backward)
@@ -53,9 +51,9 @@ PTKidsBITRobot.motorGo(50, -50)
 
 ### Turn Block
 
-Use PTKidsBITRobot's Turn block to control the robot movment by turning. The one motor will stop, another one is moving.
+Use PTKidsBITRobot's Turn block to control the robot movement by turning. One motor will stop and the other one will be moving.
 
-* The Turn must be select either `Left` or `Right`
+* The Turn must be set as either `Left` or `Right`
 * Speed is an integer value between `0` to `100`
 
 ```blocks
@@ -64,9 +62,9 @@ PTKidsBITRobot.Turn(_Turn.Left, 50)
 
 ### Spin Block
 
-Use PTKidsBITRobot's Spin block to control both motors separately. For example, choose one motor spin with forward direction another one spin with backward direction.
+Use PTKidsBITRobot's Spin block to control both motors separately. For example, choose one motor to spin with forward direction another one to spin with backward direction.
 
-* The Spin must be select either `Left` or `Right`
+* The Spin must be set as either `Left` or `Right`
 * Speed is an integer value between `0` to `100`
 
 ```blocks
@@ -75,7 +73,7 @@ PTKidsBITRobot.Spin(_Spin.Left, 50)
 
 ### Motor Stop Block 
 
-Use PTKidsBITRobot's Motor Stop block is used to stop both motors.
+PTKidsBITRobot's Motor Stop block is used to stop both motors.
 
 ```blocks
 PTKidsBITRobot.motorStop()
@@ -83,7 +81,7 @@ PTKidsBITRobot.motorStop()
 
 ### servoWrite Block
 
-Use PTKidsBITRobot's servoWrite block for control the servo's moving degree from 0 to 180
+Use PTKidsBITRobot's servoWrite block for controling the servo's moving degree from 0 to 180
 
 * The Servo must be select either `P8` or `P12`
 * Degree is an integer value between `0 - 180`
@@ -94,7 +92,7 @@ PTKidsBITRobot.servoWrite(Servo_Write.P8, 180)
 
 ### ADCRead Block
 
-Use PTKidsBITRobot's ADCRead block for read analog from ADC channels. The resolution is 0 to 4095. PTKidsBIT have 8 channel ADC.
+Use PTKidsBITRobot's ADCRead block for reading the analog value from ADC channels. The resolution is 0 to 4095. PTKidsBIT have 8 channel ADC.
 
 * Select `Pin` from `0` to `7` for reading the analog sensor.
 
@@ -106,12 +104,12 @@ basic.forever(function () {
 
 ### SensorCalibrate Block
 
-Use PTKidsBITRobot's SensorCalibrate block for calibration line follower sensor, left sensor and right sensor.
+Use PTKidsBITRobot's SensorCalibrate block for calibrating the line follower sensor, left sensor and right sensor.
 
 The calibration process is as follows
 * Place the line follower sensor on the line, press Button A once and wait until the buzzer sounds.
 * Place left and right sensor on the line, press Button A once and wait until the buzzer sounds.
-* Place all sensor on the floor, press Button A once and wait until the buzzer sounds.
+* Place all sensors on the floor, press Button A once and wait until the buzzer sounds.
 
 ```blocks
 PTKidsBITRobot.SensorCalibrate()
@@ -139,7 +137,7 @@ PTKidsBITRobot.ForwardLINE(
 
 ### ForwardTIME Block
 
-Use PTKidsBITRobot's ForwardTIME blog for the robot to follow the line forward. When the time, the robot will stop. 
+Use PTKidsBITRobot's ForwardTIME blog for the robot to follow the line forward. When the time is reached, the robot will stop. 
 
 * Time is set time.
 * Min Speed is minimum speed between `0` to `100`
@@ -163,7 +161,7 @@ Use PTKidsBITRobot's TurnLINE block for the Robot to turn until it detects a lin
 
 * TurnLINE is direction to turn the robot. Select `Left` or `Right`
 * Speed is maximun speed between `0` to `100`
-* Sensor is the sensor you want the robot to stop.
+* Sensor is the sensor you want to make the robot stop.
 * Fast Time is the time at the maximum robot speed before a line is detected.
 * Break Time is the time for the Motor to reverse to brake when the Robot stops.
 
