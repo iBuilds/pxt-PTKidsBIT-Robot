@@ -109,7 +109,7 @@ enum Turn_Line {
     Right
 }
 
-//% color="#5DE2FF" icon="\u2B99"
+//% color="#2ECC71" icon="\u2B99"
 namespace PTKidsBITRobot {
 	//% group="Motor Control"
     /**
