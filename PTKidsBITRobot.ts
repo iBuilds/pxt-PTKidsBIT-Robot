@@ -309,9 +309,9 @@ namespace PTKidsBITRobot {
         let on_line = 0
         let adc_sensor_pin = sensor - 1
         let error = 0
-        let timer = 0
         let motor_speed = 0
-        let motor_slow = Math.round(speed / 4)
+        let motor_slow = 10
+        let timer = control.millis()
 
         while (1) {
             on_line = 0
@@ -325,14 +325,24 @@ namespace PTKidsBITRobot {
                 break
             }
 
+            error = timer - (control.millis() - time)
+            motor_speed = error
+
+            if (motor_speed > 100) {
+                motor_speed = 100
+            }
+            else if (motor_speed < 0) {
+                motor_speed = motor_slow
+            }
+
             if (turn == Turn_Line.Left) {
-                motorGo(-speed, speed)
+                motorGo(-motor_speed, motor_speed)
             }
             else if (turn == Turn_Line.Right) {
-                motorGo(speed, -speed)
+                motorGo(motor_speed, -motor_speed)
             }
         }
-        timer = control.millis()
+        
         while (1) {
             if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
                 motorStop()
