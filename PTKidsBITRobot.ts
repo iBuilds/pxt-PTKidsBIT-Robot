@@ -31,6 +31,10 @@ let previous_error = 0
 let PD_Value = 0
 let left_motor_speed = 0
 let right_motor_speed = 0
+let Servo_8_Enable = 0
+let Servo_12_Enable = 0
+let Servo_8_Degree = 0
+let Servo_12_Degree = 0
 
 enum Motor_Write {
     //% block="Left"
@@ -238,10 +242,14 @@ namespace PTKidsBITRobot {
     //% degree.min=0 degree.max=180
     export function servoWrite(servo: Servo_Write, degree: number): void {
         if (servo == Servo_Write.P8) {
-            pins.servoWritePin(AnalogPin.P8, degree)
+            Servo_8_Enable = 1
+            Servo_8_Degree = degree
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
         }
         else if (servo == Servo_Write.P12) {
-            pins.servoWritePin(AnalogPin.P12, degree)
+            Servo_12_Enable = 1
+            Servo_12_Degree = degree
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
         }
     }
 
@@ -683,11 +691,34 @@ namespace PTKidsBITRobot {
         let Line_Cal = [0, 0, 0, 0, 0, 0, 0, 0]
         let Background_Cal = [0, 0, 0, 0, 0, 0, 0, 0]
 
+        basic.pause(300)
+        pins.digitalWritePin(DigitalPin.P8, 0)
+        pins.digitalWritePin(DigitalPin.P12, 0)
+        basic.pause(100)
         music.playTone(587, music.beat(BeatFraction.Quarter))
         music.playTone(784, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
+        basic.pause(200)
+
         ////Calibrate Follower Line
         while (!input.buttonIsPressed(Button.A));
+        pins.digitalWritePin(DigitalPin.P8, 0)
+        pins.digitalWritePin(DigitalPin.P12, 0)
+        basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
+        basic.pause(200)
+
         for (let i = 0; i < 20; i ++) {
             for (let j = 0; j < _Num_Sensor; j ++) {
                 Line_Cal[j] += ADCRead(ADC_PIN[_Sensor_PIN[j]])
@@ -702,11 +733,32 @@ namespace PTKidsBITRobot {
                 }
             }
         }
+        pins.digitalWritePin(DigitalPin.P8, 0)
+        pins.digitalWritePin(DigitalPin.P12, 0)
+        basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
+        basic.pause(200)
 
         ////Calibrate Background
         while (!input.buttonIsPressed(Button.A));
+        pins.digitalWritePin(DigitalPin.P8, 0)
+        pins.digitalWritePin(DigitalPin.P12, 0)
+        basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
+        basic.pause(200)
+
         for (let i = 0; i < 20; i ++) {
             for (let j = 0; j < _Num_Sensor; j ++) {
                 Background_Cal[j] += ADCRead(ADC_PIN[_Sensor_PIN[j]])
@@ -738,7 +790,17 @@ namespace PTKidsBITRobot {
         Color_Line_All = [Color_Line_Left[0], Color_Line[0], Color_Line[1], Color_Line[2], Color_Line[3], Color_Line_Right[0]]
         Color_Background_All = [Color_Background_Left[0], Color_Background[0], Color_Background[1], Color_Background[2], Color_Background[3], Color_Background_Right[0]]
 
+        pins.digitalWritePin(DigitalPin.P8, 0)
+        pins.digitalWritePin(DigitalPin.P12, 0)
+        basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
         music.playTone(587, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
+        basic.pause(200)
     }
 }
