@@ -246,12 +246,14 @@ namespace PTKidsBITRobot {
             Servo_8_Degree = degree
             pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
             pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+            basic.pause(100);
         }
         else if (servo == Servo_Write.P12) {
             Servo_12_Enable = 1
             Servo_12_Degree = degree
             pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
             pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+            basic.pause(100);
         }
     }
 
@@ -699,6 +701,12 @@ namespace PTKidsBITRobot {
         basic.pause(100)
         music.playTone(587, music.beat(BeatFraction.Quarter))
         music.playTone(784, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
         basic.pause(200)
 
         ////Calibrate Follower Line
@@ -707,6 +715,12 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
         basic.pause(200)
 
         for (let i = 0; i < 20; i++) {
@@ -727,6 +741,12 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
         basic.pause(200)
 
         ////Calibrate Background
@@ -735,6 +755,12 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
+        if (Servo_12_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        }
         basic.pause(200)
 
         for (let i = 0; i < 20; i++) {
@@ -773,6 +799,9 @@ namespace PTKidsBITRobot {
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
         music.playTone(587, music.beat(BeatFraction.Quarter))
+        if (Servo_8_Enable == 1) {
+            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        }
         if (Servo_12_Enable == 1) {
             pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
         }
