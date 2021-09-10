@@ -245,11 +245,13 @@ namespace PTKidsBITRobot {
             Servo_8_Enable = 1
             Servo_8_Degree = degree
             pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
         }
         else if (servo == Servo_Write.P12) {
             Servo_12_Enable = 1
             Servo_12_Degree = degree
             pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
         }
     }
 
