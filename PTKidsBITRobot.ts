@@ -115,12 +115,12 @@ enum Turn_Line {
 
 //% color="#2ECC71" icon="\u2B99"
 namespace PTKidsBITRobot {
-	//% group="Motor Control"
+    //% group="Motor Control"
     /**
      * Stop all Motor
      */
     //% block="Motor Stop"
-    export function motorStop():void {
+    export function motorStop(): void {
         pins.digitalWritePin(DigitalPin.P13, 1)
         pins.analogWritePin(AnalogPin.P14, 0)
         pins.digitalWritePin(DigitalPin.P15, 1)
@@ -135,7 +135,7 @@ namespace PTKidsBITRobot {
     //% speed.min=0 speed.max=100
     export function Spin(spin: _Spin, speed: number): void {
         speed = pins.map(speed, 0, 100, 0, 1023)
-        
+
         if (spin == _Spin.Left) {
             pins.digitalWritePin(DigitalPin.P13, 1)
             pins.analogWritePin(AnalogPin.P14, speed)
@@ -211,7 +211,7 @@ namespace PTKidsBITRobot {
     //% speed.min=-100 speed.max=100
     export function motorWrite(motor: Motor_Write, speed: number): void {
         speed = pins.map(speed, -100, 100, -1023, 1023)
-        
+
         if (motor == Motor_Write.Motor_Left) {
             if (speed < 0) {
                 pins.digitalWritePin(DigitalPin.P13, 1)
@@ -258,9 +258,9 @@ namespace PTKidsBITRobot {
      * Read Analog from ADC Channel
      */
     //% block="ADCRead %ADC_Read"
-    export function ADCRead(ADCRead: ADC_Read): number { 
+    export function ADCRead(ADCRead: ADC_Read): number {
         pins.i2cWriteNumber(0x48, ADCRead, NumberFormat.UInt8LE, false)
-        return ADCRead = pins.i2cReadNumber(0x48, NumberFormat.UInt16BE, false)      
+        return ADCRead = pins.i2cReadNumber(0x48, NumberFormat.UInt16BE, false)
     }
 
     //% group="Sensor and ADC"
@@ -305,15 +305,15 @@ namespace PTKidsBITRobot {
     //% time.defl=200
     export function TurnLINE(turn: Turn_Line, speed: number, sensor: number, time: number) {
         let ADC_PIN = [
-                ADC_Read.ADC0,
-                ADC_Read.ADC1,
-                ADC_Read.ADC2,
-                ADC_Read.ADC3,
-                ADC_Read.ADC4,
-                ADC_Read.ADC5,
-                ADC_Read.ADC6,
-                ADC_Read.ADC7
-            ]
+            ADC_Read.ADC0,
+            ADC_Read.ADC1,
+            ADC_Read.ADC2,
+            ADC_Read.ADC3,
+            ADC_Read.ADC4,
+            ADC_Read.ADC5,
+            ADC_Read.ADC6,
+            ADC_Read.ADC7
+        ]
         let on_line = 0
         let adc_sensor_pin = sensor - 1
         let error = 0
@@ -323,7 +323,7 @@ namespace PTKidsBITRobot {
 
         while (1) {
             on_line = 0
-            for (let i = 0; i < Sensor_PIN.length; i ++) {
+            for (let i = 0; i < Sensor_PIN.length; i++) {
                 if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= 500) {
                     on_line += 1;
                 }
@@ -350,7 +350,7 @@ namespace PTKidsBITRobot {
                 motorGo(motor_speed, -motor_speed)
             }
         }
-        
+
         while (1) {
             if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
                 motorStop()
@@ -429,15 +429,15 @@ namespace PTKidsBITRobot {
     //% break_time.defl=20
     export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
         let ADC_PIN = [
-                ADC_Read.ADC0, 
-                ADC_Read.ADC1,
-                ADC_Read.ADC2, 
-                ADC_Read.ADC3,
-                ADC_Read.ADC4, 
-                ADC_Read.ADC5,
-                ADC_Read.ADC6,
-                ADC_Read.ADC7
-            ]
+            ADC_Read.ADC0,
+            ADC_Read.ADC1,
+            ADC_Read.ADC2,
+            ADC_Read.ADC3,
+            ADC_Read.ADC4,
+            ADC_Read.ADC5,
+            ADC_Read.ADC6,
+            ADC_Read.ADC7
+        ]
         let found_left = 0
         let found_right = 0
         let last_left = 0
@@ -451,19 +451,19 @@ namespace PTKidsBITRobot {
             found_right = 0
             on_line = 0
             on_line_LR = 0
-            for (let i = 0; i < Sensor_PIN.length; i ++) {
+            for (let i = 0; i < Sensor_PIN.length; i++) {
                 if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 800) {
                     on_line += 1;
                 }
             }
 
-            for (let i = 0; i < Sensor_Left.length; i ++) {
+            for (let i = 0; i < Sensor_Left.length; i++) {
                 if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 800) {
                     on_line_LR += 1;
                 }
             }
 
-            for (let i = 0; i < Sensor_Right.length; i ++) {
+            for (let i = 0; i < Sensor_Right.length; i++) {
                 if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 800) {
                     on_line_LR += 1;
                 }
@@ -498,15 +498,15 @@ namespace PTKidsBITRobot {
             else {
                 motorGo(min_speed, min_speed)
             }
-            
+
             if (line_state == 0) {
-                for (let i = 0; i < Sensor_Left.length; i ++) {
+                for (let i = 0; i < Sensor_Left.length; i++) {
                     if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 800) {
                         found_left += 1;
                     }
                 }
 
-                for (let i = 0; i < Sensor_Right.length; i ++) {
+                for (let i = 0; i < Sensor_Right.length; i++) {
                     if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 800) {
                         found_right += 1;
                     }
@@ -517,7 +517,7 @@ namespace PTKidsBITRobot {
                 }
             }
             else if (line_state == 1) {
-                for (let i = 0; i < Sensor_Left.length; i ++) {
+                for (let i = 0; i < Sensor_Left.length; i++) {
                     if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 800) {
                         found_left += 1;
                         if (last_left != Sensor_Left.length) {
@@ -526,7 +526,7 @@ namespace PTKidsBITRobot {
                     }
                 }
 
-                for (let i = 0; i < Sensor_Right.length; i ++) {
+                for (let i = 0; i < Sensor_Right.length; i++) {
                     if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 800) {
                         found_right += 1;
                         if (last_right != Sensor_Right.length) {
@@ -619,20 +619,20 @@ namespace PTKidsBITRobot {
     //% block="GETPosition"
     export function GETPosition() {
         let ADC_PIN = [
-                ADC_Read.ADC0, 
-                ADC_Read.ADC1,
-                ADC_Read.ADC2, 
-                ADC_Read.ADC3,
-                ADC_Read.ADC4, 
-                ADC_Read.ADC5,
-                ADC_Read.ADC6,
-                ADC_Read.ADC7
-            ]
+            ADC_Read.ADC0,
+            ADC_Read.ADC1,
+            ADC_Read.ADC2,
+            ADC_Read.ADC3,
+            ADC_Read.ADC4,
+            ADC_Read.ADC5,
+            ADC_Read.ADC6,
+            ADC_Read.ADC7
+        ]
         let Average = 0
         let Sum_Value = 0
         let ON_Line = 0
 
-        for (let i = 0; i < Num_Sensor; i ++) {
+        for (let i = 0; i < Num_Sensor; i++) {
             let Value_Sensor = 0;
             if (Line_Mode == 0) {
                 Value_Sensor = pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)
@@ -658,11 +658,11 @@ namespace PTKidsBITRobot {
                 Sum_Value += Value_Sensor
             }
         }
-        if (ON_Line == 0){
-            if (Last_Position < (Num_Sensor - 1) * 1000 / 2){
+        if (ON_Line == 0) {
+            if (Last_Position < (Num_Sensor - 1) * 1000 / 2) {
                 return (Num_Sensor - 1) * 1000
             }
-            else{
+            else {
                 return 0
             }
         }
@@ -676,16 +676,16 @@ namespace PTKidsBITRobot {
      */
     //% block="SensorCalibrate $adc_pin"
     export function SensorCalibrate(): void {
-        let ADC_PIN = [ 
-                ADC_Read.ADC0,
-                ADC_Read.ADC1,
-                ADC_Read.ADC2,
-                ADC_Read.ADC3,
-                ADC_Read.ADC4,
-                ADC_Read.ADC5,
-                ADC_Read.ADC6,
-                ADC_Read.ADC7
-            ]
+        let ADC_PIN = [
+            ADC_Read.ADC0,
+            ADC_Read.ADC1,
+            ADC_Read.ADC2,
+            ADC_Read.ADC3,
+            ADC_Read.ADC4,
+            ADC_Read.ADC5,
+            ADC_Read.ADC6,
+            ADC_Read.ADC7
+        ]
         let _Sensor_PIN = [0, 1, 2, 3, 4, 5]
         let _Num_Sensor = _Sensor_PIN.length
         let Line_Cal = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -697,12 +697,6 @@ namespace PTKidsBITRobot {
         basic.pause(100)
         music.playTone(587, music.beat(BeatFraction.Quarter))
         music.playTone(784, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
-        if (Servo_12_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
-        }
         basic.pause(200)
 
         ////Calibrate Follower Line
@@ -711,23 +705,17 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
-        if (Servo_12_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
-        }
         basic.pause(200)
 
-        for (let i = 0; i < 20; i ++) {
-            for (let j = 0; j < _Num_Sensor; j ++) {
+        for (let i = 0; i < 20; i++) {
+            for (let j = 0; j < _Num_Sensor; j++) {
                 Line_Cal[j] += ADCRead(ADC_PIN[_Sensor_PIN[j]])
             }
             basic.pause(50)
         }
-        for (let i = 0; i < _Num_Sensor; i ++) {
+        for (let i = 0; i < _Num_Sensor; i++) {
             Line_Cal[i] = Line_Cal[i] / 20
-            for (let j = 0; j < 8; j ++) {
+            for (let j = 0; j < 8; j++) {
                 if (_Sensor_PIN[i] == j) {
                     Line_HIGH[j] = Line_Cal[i]
                 }
@@ -737,12 +725,6 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
-        if (Servo_12_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
-        }
         basic.pause(200)
 
         ////Calibrate Background
@@ -751,38 +733,32 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
-        if (Servo_12_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
-        }
         basic.pause(200)
 
-        for (let i = 0; i < 20; i ++) {
-            for (let j = 0; j < _Num_Sensor; j ++) {
+        for (let i = 0; i < 20; i++) {
+            for (let j = 0; j < _Num_Sensor; j++) {
                 Background_Cal[j] += ADCRead(ADC_PIN[_Sensor_PIN[j]])
             }
             basic.pause(50)
         }
-        for (let i = 0; i < _Num_Sensor; i ++) {
+        for (let i = 0; i < _Num_Sensor; i++) {
             Background_Cal[i] = Background_Cal[i] / 20
-            for (let j = 0; j < 8; j ++) {
+            for (let j = 0; j < 8; j++) {
                 if (_Sensor_PIN[i] == j) {
                     Line_LOW[j] = Background_Cal[i]
                 }
             }
         }
 
-        for (let i = 0; i < Num_Sensor; i ++) {
+        for (let i = 0; i < Num_Sensor; i++) {
             Color_Line[i] = Line_HIGH[Sensor_PIN[i]]
             Color_Background[i] = Line_LOW[Sensor_PIN[i]]
         }
-        for (let i = 0; i < Sensor_Left.length; i ++) {
+        for (let i = 0; i < Sensor_Left.length; i++) {
             Color_Line_Left[i] = Line_HIGH[Sensor_Left[i]]
             Color_Background_Left[i] = Line_LOW[Sensor_Left[i]]
         }
-        for (let i = 0; i < Sensor_Right.length; i ++) {
+        for (let i = 0; i < Sensor_Right.length; i++) {
             Color_Line_Right[i] = Line_HIGH[Sensor_Right[i]]
             Color_Background_Right[i] = Line_LOW[Sensor_Right[i]]
         }
@@ -795,9 +771,6 @@ namespace PTKidsBITRobot {
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
         music.playTone(587, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
         if (Servo_12_Enable == 1) {
             pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
         }
