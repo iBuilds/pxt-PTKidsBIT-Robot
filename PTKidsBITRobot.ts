@@ -340,8 +340,8 @@ namespace PTKidsBITRobot {
             error = timer - (control.millis() - time)
             motor_speed = error
 
-            if (motor_speed > 100) {
-                motor_speed = 100
+            if (motor_speed > speed) {
+                motor_speed = speed
             }
             else if (motor_speed < 0) {
                 motor_speed = motor_slow
@@ -364,8 +364,8 @@ namespace PTKidsBITRobot {
                 error = timer - (control.millis() - time)
                 motor_speed = error
 
-                if (motor_speed > 100) {
-                    motor_speed = 100
+                if (motor_speed > speed) {
+                    motor_speed = speed
                 }
                 else if (motor_speed < 0) {
                     motor_speed = motor_slow
@@ -701,12 +701,12 @@ namespace PTKidsBITRobot {
         basic.pause(100)
         music.playTone(587, music.beat(BeatFraction.Quarter))
         music.playTone(784, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
-        if (Servo_12_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
-        }
+        // if (Servo_8_Enable == 1) {
+        //     pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        // }
+        // if (Servo_12_Enable == 1) {
+        //     pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        // }
         basic.pause(200)
 
         ////Calibrate Follower Line
@@ -715,12 +715,12 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
-        if (Servo_12_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
-        }
+        // if (Servo_8_Enable == 1) {
+        //     pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        // }
+        // if (Servo_12_Enable == 1) {
+        //     pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        // }
         basic.pause(200)
 
         for (let i = 0; i < 20; i++) {
@@ -741,12 +741,12 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
-        if (Servo_12_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
-        }
+        // if (Servo_8_Enable == 1) {
+        //     pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        // }
+        // if (Servo_12_Enable == 1) {
+        //     pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        // }
         basic.pause(200)
 
         ////Calibrate Background
@@ -755,12 +755,12 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P12, 0)
         basic.pause(100)
         music.playTone(784, music.beat(BeatFraction.Quarter))
-        if (Servo_8_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
-        }
-        if (Servo_12_Enable == 1) {
-            pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
-        }
+        // if (Servo_8_Enable == 1) {
+        //     pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
+        // }
+        // if (Servo_12_Enable == 1) {
+        //     pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
+        // }
         basic.pause(200)
 
         for (let i = 0; i < 20; i++) {
