@@ -139,14 +139,18 @@ namespace PTKidsBITRobot {
         if (spin == _Spin.Left) {
             pins.digitalWritePin(DigitalPin.P13, 1)
             pins.analogWritePin(AnalogPin.P14, speed)
+            pins.analogSetPeriod(AnalogPin.P14, 2000)
             pins.digitalWritePin(DigitalPin.P15, 0)
             pins.analogWritePin(AnalogPin.P16, speed)
+            pins.analogSetPeriod(AnalogPin.P16, 2000)
         }
         else if (spin == _Spin.Right) {
             pins.digitalWritePin(DigitalPin.P13, 0)
             pins.analogWritePin(AnalogPin.P14, speed)
+            pins.analogSetPeriod(AnalogPin.P14, 2000)
             pins.digitalWritePin(DigitalPin.P15, 1)
             pins.analogWritePin(AnalogPin.P16, speed)
+            pins.analogSetPeriod(AnalogPin.P16, 2000)
         }
     }
 
@@ -164,10 +168,12 @@ namespace PTKidsBITRobot {
             pins.analogWritePin(AnalogPin.P14, 0)
             pins.digitalWritePin(DigitalPin.P15, 0)
             pins.analogWritePin(AnalogPin.P16, speed)
+            pins.analogSetPeriod(AnalogPin.P16, 2000)
         }
         else if (turn == _Turn.Right) {
             pins.digitalWritePin(DigitalPin.P13, 0)
             pins.analogWritePin(AnalogPin.P14, speed)
+            pins.analogSetPeriod(AnalogPin.P14, 2000)
             pins.digitalWritePin(DigitalPin.P15, 1)
             pins.analogWritePin(AnalogPin.P16, 0)
         }
@@ -187,19 +193,23 @@ namespace PTKidsBITRobot {
         if (speed1 < 0) {
             pins.digitalWritePin(DigitalPin.P13, 1)
             pins.analogWritePin(AnalogPin.P14, -speed1)
+            pins.analogSetPeriod(AnalogPin.P14, 2000)
         }
         else if (speed1 >= 0) {
             pins.digitalWritePin(DigitalPin.P13, 0)
             pins.analogWritePin(AnalogPin.P14, speed1)
+            pins.analogSetPeriod(AnalogPin.P14, 2000)
         }
 
         if (speed2 < 0) {
             pins.digitalWritePin(DigitalPin.P15, 1)
             pins.analogWritePin(AnalogPin.P16, -speed2)
+            pins.analogSetPeriod(AnalogPin.P16, 2000)
         }
         else if (speed2 >= 0) {
             pins.digitalWritePin(DigitalPin.P15, 0)
             pins.analogWritePin(AnalogPin.P16, speed2)
+            pins.analogSetPeriod(AnalogPin.P16, 2000)
         }
     }
 
@@ -216,20 +226,24 @@ namespace PTKidsBITRobot {
             if (speed < 0) {
                 pins.digitalWritePin(DigitalPin.P13, 1)
                 pins.analogWritePin(AnalogPin.P14, -speed)
+                pins.analogSetPeriod(AnalogPin.P14, 2000)
             }
             else if (speed >= 0) {
                 pins.digitalWritePin(DigitalPin.P13, 0)
                 pins.analogWritePin(AnalogPin.P14, speed)
+                pins.analogSetPeriod(AnalogPin.P14, 2000)
             }
         }
         else if (motor == Motor_Write.Motor_Right) {
             if (speed < 0) {
                 pins.digitalWritePin(DigitalPin.P15, 1)
                 pins.analogWritePin(AnalogPin.P16, -speed)
+                pins.analogSetPeriod(AnalogPin.P16, 2000)
             }
             else if (speed >= 0) {
                 pins.digitalWritePin(DigitalPin.P15, 0)
                 pins.analogWritePin(AnalogPin.P16, speed)
+                pins.analogSetPeriod(AnalogPin.P16, 2000)
             }
         }
     }
