@@ -5,12 +5,6 @@
  * generated for an **exported** function.
  */
 
-let Version = 1
-let Read_Version = false
-let PCA = 0x40
-let initI2C = false
-let initLED = false
-let SERVOS = 0x06
 let Sensor_All_PIN = [0, 1, 2, 3, 4, 5]
 let Sensor_PIN = [1, 2, 3, 4]
 let Sensor_Left = [0]
@@ -18,6 +12,12 @@ let Sensor_Right = [5]
 let Num_Sensor = 4
 let LED_PIN = 0
 
+let Version = 1
+let Read_Version = false
+let PCA = 0x40
+let initI2C = false
+let initLED = false
+let SERVOS = 0x06
 let Line_LOW = [0, 0, 0, 0, 0, 0, 0, 0]
 let Line_HIGH = [0, 0, 0, 0, 0, 0, 0, 0]
 let Color_Line_All: number[] = []
@@ -30,6 +30,8 @@ let Color_Line_Right: number[] = []
 let Color_Background_Right: number[] = []
 let Line_Mode = 0
 let Last_Position = 0
+let Compensate_Left = 0
+let Compensate_Right = 0
 let error = 0
 let P = 0
 let D = 0
@@ -153,9 +155,6 @@ enum NeoPixelMode {
 
 //% color="#2ECC71" icon="\u2B99"
 namespace PTKidsBITRobot {
-    /**
-     * A NeoPixel strip
-     */
     class Strip {
         buf: Buffer;
         pin: DigitalPin;
@@ -762,28 +761,28 @@ namespace PTKidsBITRobot {
 
     //% group="Motor Control"
     /**
+     * Compensate Speed Motor Left and Motor Right
+     */
+    //% block="Compensate Left %Motor_Left|Compensate Right %Motor_Right"
+    //% left.min=-100 left.max=100
+    //% right.min=-100 right.max=100
+    export function motorCompensate(left: number, right: number): void {
+        Compensate_Left = left
+        Compensate_Right = right
+    }
+
+    //% group="Motor Control"
+    /**
      * Spin the Robot to Left or Right. The speed motor is adjustable between 0 to 100.
      */
     //% block="Spin %_Spin|Speed %Speed"
     //% speed.min=0 speed.max=100
     export function Spin(spin: _Spin, speed: number): void {
-        speed = pins.map(speed, 0, 100, 0, 1023)
-
         if (spin == _Spin.Left) {
-            pins.digitalWritePin(DigitalPin.P13, 1)
-            pins.analogWritePin(AnalogPin.P14, speed)
-            pins.analogSetPeriod(AnalogPin.P14, 2000)
-            pins.digitalWritePin(DigitalPin.P15, 0)
-            pins.analogWritePin(AnalogPin.P16, speed)
-            pins.analogSetPeriod(AnalogPin.P16, 2000)
+            motorGo(-speed, speed)
         }
         else if (spin == _Spin.Right) {
-            pins.digitalWritePin(DigitalPin.P13, 0)
-            pins.analogWritePin(AnalogPin.P14, speed)
-            pins.analogSetPeriod(AnalogPin.P14, 2000)
-            pins.digitalWritePin(DigitalPin.P15, 1)
-            pins.analogWritePin(AnalogPin.P16, speed)
-            pins.analogSetPeriod(AnalogPin.P16, 2000)
+            motorGo(speed, -speed)
         }
     }
 
@@ -794,21 +793,11 @@ namespace PTKidsBITRobot {
     //% block="Turn %_Turn|Speed %Speed"
     //% speed.min=0 speed.max=100
     export function Turn(turn: _Turn, speed: number): void {
-        speed = pins.map(speed, 0, 100, 0, 1023)
-
         if (turn == _Turn.Left) {
-            pins.digitalWritePin(DigitalPin.P13, 1)
-            pins.analogWritePin(AnalogPin.P14, 0)
-            pins.digitalWritePin(DigitalPin.P15, 0)
-            pins.analogWritePin(AnalogPin.P16, speed)
-            pins.analogSetPeriod(AnalogPin.P16, 2000)
+            motorGo(0, speed)
         }
         else if (turn == _Turn.Right) {
-            pins.digitalWritePin(DigitalPin.P13, 0)
-            pins.analogWritePin(AnalogPin.P14, speed)
-            pins.analogSetPeriod(AnalogPin.P14, 2000)
-            pins.digitalWritePin(DigitalPin.P15, 1)
-            pins.analogWritePin(AnalogPin.P16, 0)
+            motorGo(speed, 0)
         }
     }
 
@@ -820,6 +809,22 @@ namespace PTKidsBITRobot {
     //% speed1.min=-100 speed1.max=100
     //% speed2.min=-100 speed2.max=100
     export function motorGo(speed1: number, speed2: number): void {
+        speed1 = speed1 + Compensate_Left
+        speed2 = speed2 + Compensate_Right
+
+        if (speed1 < -100) {
+            speed1 = -100
+        }
+        else if (speed1 > 100) {
+            speed1 = 100
+        }
+        if (speed2 < -100) {
+            speed2 = -100
+        }
+        else if (speed2 > 100) {
+            speed2 = 100
+        }
+
         speed1 = pins.map(speed1, -100, 100, -1023, 1023)
         speed2 = pins.map(speed2, -100, 100, -1023, 1023)
 
@@ -853,31 +858,11 @@ namespace PTKidsBITRobot {
     //% block="motorWrite %Motor_Write|Speed %Speed"
     //% speed.min=-100 speed.max=100
     export function motorWrite(motor: Motor_Write, speed: number): void {
-        speed = pins.map(speed, -100, 100, -1023, 1023)
-
         if (motor == Motor_Write.Motor_Left) {
-            if (speed < 0) {
-                pins.digitalWritePin(DigitalPin.P13, 1)
-                pins.analogWritePin(AnalogPin.P14, -speed)
-                pins.analogSetPeriod(AnalogPin.P14, 2000)
-            }
-            else if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P13, 0)
-                pins.analogWritePin(AnalogPin.P14, speed)
-                pins.analogSetPeriod(AnalogPin.P14, 2000)
-            }
+            motorGo(speed, 0)
         }
         else if (motor == Motor_Write.Motor_Right) {
-            if (speed < 0) {
-                pins.digitalWritePin(DigitalPin.P15, 1)
-                pins.analogWritePin(AnalogPin.P16, -speed)
-                pins.analogSetPeriod(AnalogPin.P16, 2000)
-            }
-            else if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P15, 0)
-                pins.analogWritePin(AnalogPin.P16, speed)
-                pins.analogSetPeriod(AnalogPin.P16, 2000)
-            }
+            motorGo(0, speed)
         }
     }
 
