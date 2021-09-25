@@ -749,8 +749,7 @@ namespace PTKidsBITRobot {
         let start = 0
         let angle_input = pins.map(angle, 0, 180, -90, 90)
         angle = Math.max(Math.min(90, angle_input), -90)
-        let stop = 369 + angle * 230 / 90   //223
-
+        let stop = 369 + angle * 235 / 90
         i2cData[0] = SERVOS + servo * 4 + 2
         i2cData[1] = (stop & 0xff)
         pins.i2cWriteBuffer(PCA, i2cData, false)
