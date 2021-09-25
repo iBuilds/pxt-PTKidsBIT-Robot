@@ -121,6 +121,19 @@ enum Turn_Line {
     Right
 }
 
+enum Turn_Sensor {
+    //% block="Center"
+    Center,
+    //% block="ADC1"
+    ADC1,
+    //% block="ADC2"
+    ADC2,
+    //% block="ADC3"
+    ADC3,
+    //% block="ADC4"
+    ADC4
+}
+
 enum NeoPixelColors {
     //% block=red
     Red = 0xFF0000,
@@ -736,7 +749,7 @@ namespace PTKidsBITRobot {
         let start = 0
         let angle_input = pins.map(angle, 0, 180, -90, 90)
         angle = Math.max(Math.min(90, angle_input), -90)
-        let stop = 369 + angle * 223 / 90
+        let stop = 369 + angle * 230 / 90   //223
 
         i2cData[0] = SERVOS + servo * 4 + 2
         i2cData[1] = (stop & 0xff)
@@ -1011,7 +1024,7 @@ namespace PTKidsBITRobot {
     //% time.shadow="timePicker"
     //% break_delay.shadow="timePicker"
     //% time.defl=200
-    export function TurnLINE(turn: Turn_Line, speed: number, sensor: number, time: number) {
+    export function TurnLINE(turn: Turn_Line, speed: number, sensor: Turn_Sensor, time: number) {
         let ADC_PIN = [
             ADC_Read.ADC0,
             ADC_Read.ADC1,
@@ -1028,6 +1041,9 @@ namespace PTKidsBITRobot {
         let motor_speed = 0
         let motor_slow = 10
         let timer = control.millis()
+        let _position = 0
+        let _position_min = 0
+        let _position_max = 0
 
         while (1) {
             on_line = 0
@@ -1058,9 +1074,34 @@ namespace PTKidsBITRobot {
                 motorGo(motor_speed, -motor_speed)
             }
         }
-
         while (1) {
-            if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
+            // if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
+            //     motorStop()
+            //     break
+            // }
+            if (sensor == Turn_Sensor.Center) {
+                _position_min = 1250
+                _position_max = 1750
+            }
+            else if (sensor == Turn_Sensor.ADC1) {
+                _position_min = 2500
+                _position_max = 3000
+            }
+            else if (sensor == Turn_Sensor.ADC2) {
+                _position_min = 1500
+                _position_max = 2000
+            }
+            else if (sensor == Turn_Sensor.ADC3) {
+                _position_min = 1000
+                _position_max = 1500
+            }
+            else if (sensor == Turn_Sensor.ADC4) {
+                _position_min = 0
+                _position_max = 500
+            }
+
+            _position = GETPosition()
+            if (_position > _position_min && _position < _position_max) {
                 motorStop()
                 break
             }
