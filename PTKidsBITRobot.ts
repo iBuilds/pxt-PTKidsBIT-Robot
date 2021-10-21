@@ -1176,6 +1176,18 @@ namespace PTKidsBITRobot {
     //% break_time.shadow="timePicker"
     //% break_time.defl=20
     export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
+        if (Read_Version == false) {
+            let i2cData = pins.createBuffer(2)
+            i2cData[0] = 0
+            i2cData[1] = 16
+            if (pins.i2cWriteBuffer(64, i2cData, false) == 0) {
+                Version = 2
+            }
+            else {
+                Version = 1
+            }
+            Read_Version = true
+        }
         let ADC_PIN = [
             ADC_Read.ADC0,
             ADC_Read.ADC1,
@@ -1199,21 +1211,43 @@ namespace PTKidsBITRobot {
             found_right = 0
             on_line = 0
             on_line_LR = 0
-            for (let i = 0; i < Sensor_PIN.length; i++) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 500) {
-                    on_line += 1;
+
+            if (Version == 1) {
+                for (let i = 0; i < Sensor_PIN.length; i++) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 500) {
+                        on_line += 1;
+                    }
+                }
+
+                for (let i = 0; i < Sensor_Left.length; i++) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 500) {
+                        on_line_LR += 1;
+                    }
+                }
+
+                for (let i = 0; i < Sensor_Right.length; i++) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 500) {
+                        on_line_LR += 1;
+                    }
                 }
             }
-
-            for (let i = 0; i < Sensor_Left.length; i++) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 500) {
-                    on_line_LR += 1;
+            else if (Version == 2) {
+                for (let i = 0; i < Sensor_PIN.length; i++) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line[i], Color_Background[i], 1000, 0)) >= 900) {
+                        on_line += 1;
+                    }
                 }
-            }
 
-            for (let i = 0; i < Sensor_Right.length; i++) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 500) {
-                    on_line_LR += 1;
+                for (let i = 0; i < Sensor_Left.length; i++) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_Left[i]]), Color_Line_Left[i], Color_Background[i], 1000, 0)) >= 900) {
+                        on_line_LR += 1;
+                    }
+                }
+
+                for (let i = 0; i < Sensor_Right.length; i++) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_Right[i]]), Color_Line_Right[i], Color_Background[i], 1000, 0)) >= 900) {
+                        on_line_LR += 1;
+                    }
                 }
             }
 
