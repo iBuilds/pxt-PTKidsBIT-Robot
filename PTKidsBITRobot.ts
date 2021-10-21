@@ -1400,7 +1400,7 @@ namespace PTKidsBITRobot {
                     Value_Sensor = 1000
                 }
             }
-            if (Value_Sensor > 200) {
+            if (Value_Sensor > 30) {
                 ON_Line = 1;
                 Average += Value_Sensor * (i * 1000)
                 Sum_Value += Value_Sensor
