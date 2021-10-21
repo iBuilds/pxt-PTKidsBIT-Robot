@@ -1038,7 +1038,7 @@ namespace PTKidsBITRobot {
         let adc_sensor_pin = sensor - 1
         let error = 0
         let motor_speed = 0
-        let motor_slow = 10
+        let motor_slow = 20
         let timer = control.millis()
         let _position = 0
         let _position_min = 0
@@ -1434,7 +1434,7 @@ namespace PTKidsBITRobot {
                     Value_Sensor = 1000
                 }
             }
-            if (Value_Sensor > 20) {
+            if (Value_Sensor > 200) {
                 ON_Line = 1;
                 Average += Value_Sensor * (i * 1000)
                 Sum_Value += Value_Sensor
