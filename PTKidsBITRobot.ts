@@ -1206,29 +1206,91 @@ namespace PTKidsBITRobot {
 
     //% group="Line Follower"
     /**
-     * Line Follower Forward
+     * Line Follower Forward find Custom Line
      */
-    //% block="Find %Find_Line|Min Speed %base_speed|Max Speed %max_speed|KP %kp|KD %kd"
+    //% block="Find %sensor|Min Speed %base_speed|Max Speed %max_speed|KP %kp|KD %kd"
+    //% sensor.defl="0--111"
+    //% min_speed.defl=30
+    //% max_speed.defl=100
+    //% kp.defl=0.01
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
-    //% break_time.shadow="timePicker"
-    //% break_time.defl=20
-    export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
-        if (Read_Version == false) {
-            let i2cData = pins.createBuffer(2)
-            i2cData[0] = 0
-            i2cData[1] = 16
-            if (pins.i2cWriteBuffer(64, i2cData, false) == 0) {
-                Version = 2
+    export function ForwardLINE2(sensor: string, min_speed: number, max_speed: number, kp: number, kd: number) {
+        let set_sensor = [0, 0, 0, 0, 0, 0]
+        let on_line_setpoint = 850
+        let out_line_setpoint = 500
+        let sensor_interesting = 6
+        for (let i = 0; i < Sensor_All_PIN.length; i ++) {
+            if (sensor.charAt(i) == '-') {
+                sensor_interesting -= 1
+                set_sensor[i] = 2
             }
             else {
-                Version = 1
+                set_sensor[i] = parseFloat(sensor.charAt(i))
             }
-            Read_Version = true
         }
 
-        let on_line_setpoint = 850
+        while (1) {
+            let found = 0
+            readAdcAll()
 
+            for (let i = 0; i < Sensor_All_PIN.length; i++) {
+                if (set_sensor[i] == 0) {
+                    if (Line_All[i] < out_line_setpoint) {
+                        found += 1
+                    }
+                }
+                else if (set_sensor[i] == 1) {
+                    if (Line_All[i] > on_line_setpoint) {
+                        found += 1
+                    }
+                }
+            }
+
+            if (found >= sensor_interesting) {
+                motorStop()
+                break
+            }
+
+            error = GETPosition() - (((Num_Sensor - 1) * 1000) / 2)
+            P = error
+            D = error - previous_error
+            PD_Value = (kp * P) + (kd * D)
+            previous_error = error
+
+            left_motor_speed = min_speed - PD_Value
+            right_motor_speed = min_speed + PD_Value
+
+            if (left_motor_speed > max_speed) {
+                left_motor_speed = max_speed
+            }
+            else if (left_motor_speed < -max_speed) {
+                left_motor_speed = -max_speed
+            }
+
+            if (right_motor_speed > max_speed) {
+                right_motor_speed = max_speed
+            }
+            else if (right_motor_speed < -max_speed) {
+                right_motor_speed = -max_speed
+            }
+
+            motorGo(left_motor_speed, right_motor_speed)
+        }
+    }
+
+    //% group="Line Follower"
+    /**
+     * Line Follower Forward find Line
+     */
+    //% block="Find %Find_Line|Min Speed %base_speed|Max Speed %max_speed|KP %kp|KD %kd"
+    //% min_speed.defl=30
+    //% max_speed.defl=100
+    //% kp.defl=0.01
+    //% min_speed.min=0 min_speed.max=100
+    //% max_speed.min=0 max_speed.max=100
+    export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
+        let on_line_setpoint = 850
         while (1) {
             let found = 0
             readAdcAll()
@@ -1359,7 +1421,7 @@ namespace PTKidsBITRobot {
                     Value_Sensor = 1000
                 }
             }
-            if (Value_Sensor > 500) {
+            if (Value_Sensor > 200) {
                 ON_Line = 1;
             }
             Average += Value_Sensor * (i * 1000)
