@@ -1028,25 +1028,34 @@ namespace PTKidsBITRobot {
     //% block="GETDistance"
     export function distanceRead(): number {
         let duration
+        let average = 0
 
-        pins.digitalWritePin(DigitalPin.P1, 1)
-        basic.pause(1)
-        pins.digitalWritePin(DigitalPin.P1, 0)
-        if (pins.digitalReadPin(DigitalPin.P2) == 0) {
-            pins.digitalWritePin(DigitalPin.P1, 0)
+        for (let i = 0; i < 3; i++) {
             pins.digitalWritePin(DigitalPin.P1, 1)
+            basic.pause(1)
             pins.digitalWritePin(DigitalPin.P1, 0)
-            duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, 500 * 58)
-        } else {
-            pins.digitalWritePin(DigitalPin.P1, 0)
-            pins.digitalWritePin(DigitalPin.P1, 1)
-            duration = pins.pulseIn(DigitalPin.P2, PulseValue.Low, 500 * 58)
+            if (pins.digitalReadPin(DigitalPin.P2) == 0) {
+                pins.digitalWritePin(DigitalPin.P1, 0)
+                pins.digitalWritePin(DigitalPin.P1, 1)
+                pins.digitalWritePin(DigitalPin.P1, 0)
+                duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, 500 * 58)
+            } else {
+                pins.digitalWritePin(DigitalPin.P1, 0)
+                pins.digitalWritePin(DigitalPin.P1, 1)
+                duration = pins.pulseIn(DigitalPin.P2, PulseValue.Low, 500 * 58)
+            }
+            duration = duration / 39
+            average += duration
         }
+        
 
-        let x = duration / 39
+        let x = average / 3
 
-        if (x <= 0 || x > 500) {
+        if (x <= 0) {
             return 0
+        }
+        else if (x > 200) {
+            return 200
         }
 
         return Math.round(x)
@@ -1284,6 +1293,7 @@ namespace PTKidsBITRobot {
      * Line Follower Forward find Line
      */
     //% block="Find %Find_Line|Min Speed %base_speed|Max Speed %max_speed|KP %kp|KD %kd"
+    //% find.defl=Find_Line.Center
     //% min_speed.defl=30
     //% max_speed.defl=100
     //% kp.defl=0.01
