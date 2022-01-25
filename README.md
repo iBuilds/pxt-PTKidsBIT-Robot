@@ -9,7 +9,7 @@ The [PTKidsBIT](http://www.ptbot-shop.com/product/31/ptkidsbit-education-robot-k
 
 ## Line Follower Robot
 
-[![Line Follower Robot](https://raw.githubusercontent.com/iBuilds/pxt-PTKidsBIT-Robot/master/youtube_image.png)](https://www.youtube.com/watch?v=yK4SOhKdycs)
+[![Line Follower Robot](https://raw.githubusercontent.com/iBuilds/pxt-PTKidsBIT-Robot/master/youtube_image.png)](https://www.youtube.com/watch?v=S9IlM9hbuls)
 
 ## micro:bit Pin Assignment
 
