@@ -44,6 +44,7 @@ let Servo_8_Enable = 0
 let Servo_12_Enable = 0
 let Servo_8_Degree = 0
 let Servo_12_Degree = 0
+let distance = 0
 
 enum Motor_Write {
     //% block="Left"
@@ -1036,8 +1037,12 @@ namespace PTKidsBITRobot {
         control.waitMicros(10)
         pins.digitalWritePin(DigitalPin.P1, 0)
         duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, maxCmDistance * 58)
+        let d = Math.idiv(duration, 58)
 
-        return Math.idiv(duration, 58)
+        if (d != 0) {
+            distance = d
+        }
+        return distance
     }
 
     //% group="Line Follower"
