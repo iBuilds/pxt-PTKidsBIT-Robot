@@ -45,6 +45,7 @@ let Servo_12_Enable = 0
 let Servo_8_Degree = 0
 let Servo_12_Degree = 0
 let distance = 0
+let timer = 0
 
 enum Motor_Write {
     //% block="Left"
@@ -1030,6 +1031,17 @@ namespace PTKidsBITRobot {
     export function distanceRead(maxCmDistance = 500): number {
         let duration
 
+        if (control.millis() - timer > 1000) {
+            pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
+            pins.digitalWritePin(DigitalPin.P1, 0)
+            control.waitMicros(2)
+            pins.digitalWritePin(DigitalPin.P1, 1)
+            control.waitMicros(10)
+            pins.digitalWritePin(DigitalPin.P1, 0)
+            duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, maxCmDistance * 58)
+            distance = Math.idiv(duration, 58)
+        }
+
         pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
         pins.digitalWritePin(DigitalPin.P1, 0)
         control.waitMicros(2)
@@ -1038,11 +1050,13 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P1, 0)
         duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, maxCmDistance * 58)
         let d = Math.idiv(duration, 58)
+        distance = (0.1 * d) + (1 - 0.1) * distance
 
-        if (d != 0) {
-            distance = d
-        }
-        return distance
+        // if (d != 0) {
+        //     distance = d
+        // }
+        timer = control.millis()
+        return Math.round(distance)
     }
 
     //% group="Line Follower"
