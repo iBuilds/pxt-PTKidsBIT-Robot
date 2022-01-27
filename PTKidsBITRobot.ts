@@ -1026,33 +1026,18 @@ namespace PTKidsBITRobot {
      * Read Distance from Ultrasonic Sensor
      */
     //% block="GETDistance"
-    export function distanceRead(): number {
+    export function distanceRead(maxCmDistance = 500): number {
         let duration
 
-        pins.digitalWritePin(DigitalPin.P1, 1)
-        basic.pause(1)
+        pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
         pins.digitalWritePin(DigitalPin.P1, 0)
-        if (pins.digitalReadPin(DigitalPin.P2) == 0) {
-            pins.digitalWritePin(DigitalPin.P1, 0)
-            pins.digitalWritePin(DigitalPin.P1, 1)
-            pins.digitalWritePin(DigitalPin.P1, 0)
-            duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, 500 * 58)
-        } else {
-            pins.digitalWritePin(DigitalPin.P1, 0)
-            pins.digitalWritePin(DigitalPin.P1, 1)
-            duration = pins.pulseIn(DigitalPin.P2, PulseValue.Low, 500 * 58)
-        }
+        control.waitMicros(2)
+        pins.digitalWritePin(DigitalPin.P1, 1)
+        control.waitMicros(10)
+        pins.digitalWritePin(DigitalPin.P1, 0)
+        duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, maxCmDistance * 58)
 
-        let x = duration / 39
-
-        if (x <= 0) {
-            return 1
-        }
-        else if (x >= 500) {
-            return 500
-        }
-
-        return Math.round(x)
+        return Math.idiv(duration, 58)
     }
 
     //% group="Line Follower"
