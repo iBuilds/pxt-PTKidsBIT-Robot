@@ -1050,11 +1050,10 @@ namespace PTKidsBITRobot {
         pins.digitalWritePin(DigitalPin.P1, 0)
         duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, maxCmDistance * 58)
         let d = Math.idiv(duration, 58)
-        distance = (0.1 * d) + (1 - 0.1) * distance
 
-        // if (d != 0) {
-        //     distance = d
-        // }
+        if (d != 0) {
+            distance = (0.1 * d) + (1 - 0.1) * distance
+        }
         timer = control.millis()
         return Math.round(distance)
     }
