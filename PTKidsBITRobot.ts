@@ -1289,15 +1289,17 @@ namespace PTKidsBITRobot {
     /**
      * Line Follower Forward find Line
      */
-    //% block="Find %Find_Line|Min Speed %base_speed|Max Speed %max_speed|KP %kp|KD %kd"
+    //% block="Find %Find_Line|Count %count|Min Speed %base_speed|Max Speed %max_speed|KP %kp|KD %kd"
     //% find.defl=Find_Line.Center
+    //% count.defl=1
     //% min_speed.defl=30
     //% max_speed.defl=100
     //% kp.defl=0.01
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
-    export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
+    export function ForwardLINE(find: Find_Line, count: number, min_speed: number, max_speed: number, kp: number, kd: number) {
         let on_line_setpoint = 850
+        let _count = 0
         while (1) {
             let found = 0
             readAdcAll()
@@ -1310,20 +1312,74 @@ namespace PTKidsBITRobot {
 
             if (find == Find_Line.Center) {
                 if (found >= 5) {
-                    motorStop()
-                    break
+                    _count += 1
+                    if (count == _count) {
+                        motorStop()
+                        break
+                    }
+                    else {
+                        while (1) {
+                            let found = 0
+                            readAdcAll()
+
+                            for (let i = 0; i < Sensor_All_PIN.length; i++) {
+                                if (Line_All[i] > on_line_setpoint) {
+                                    found += 1
+                                }
+                            }
+
+                            if (found >= 5) {
+                                motorGo(min_speed, min_speed)
+                            }
+                            else {
+                                break
+                            }
+                        }
+                    }
                 }
             }
             else if (find == Find_Line.Left) {
                 if (Line_All[0] > on_line_setpoint && Line_All[1] > on_line_setpoint && Line_All[2] > on_line_setpoint && Line_All[5] < 500) {
-                    motorStop()
-                    break
+                    _count += 1
+                    if (count == _count) {
+                        motorStop()
+                        break
+                    }
+                    else {
+                        while (1) {
+                            let found = 0
+                            readAdcAll()
+
+                            if (Line_All[0] > on_line_setpoint && Line_All[1] > on_line_setpoint && Line_All[2] > on_line_setpoint && Line_All[5] < 500) {
+                                motorGo(min_speed, min_speed)
+                            }
+                            else {
+                                break
+                            }
+                        }
+                    }
                 }
             }
             else if (find == Find_Line.Right) {
                 if (Line_All[3] > on_line_setpoint && Line_All[4] > on_line_setpoint && Line_All[5] > on_line_setpoint && Line_All[0] < 500) {
-                    motorStop()
-                    break
+                    _count += 1
+                    if (count == _count) {
+                        motorStop()
+                        break
+                    }
+                    else {
+                        while (1) {
+                            let found = 0
+                            readAdcAll()
+
+                            if (Line_All[3] > on_line_setpoint && Line_All[4] > on_line_setpoint && Line_All[5] > on_line_setpoint && Line_All[0] < 500) {
+                                motorGo(min_speed, min_speed)
+                            }
+                            else {
+                                break
+                            }
+                        }
+                    }
                 }
             }
 
