@@ -1313,7 +1313,7 @@ namespace PTKidsBITRobot {
             if (find == Find_Line.Center) {
                 if (found >= 5) {
                     _count += 1
-                    if (count == _count) {
+                    if (count >= _count) {
                         motorStop()
                         break
                     }
@@ -1341,7 +1341,7 @@ namespace PTKidsBITRobot {
             else if (find == Find_Line.Left) {
                 if (Line_All[0] > on_line_setpoint && Line_All[1] > on_line_setpoint && Line_All[2] > on_line_setpoint && Line_All[5] < 500) {
                     _count += 1
-                    if (count == _count) {
+                    if (count >= _count) {
                         motorStop()
                         break
                     }
@@ -1363,7 +1363,7 @@ namespace PTKidsBITRobot {
             else if (find == Find_Line.Right) {
                 if (Line_All[3] > on_line_setpoint && Line_All[4] > on_line_setpoint && Line_All[5] > on_line_setpoint && Line_All[0] < 500) {
                     _count += 1
-                    if (count == _count) {
+                    if (count >= _count) {
                         motorStop()
                         break
                     }
