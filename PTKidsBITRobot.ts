@@ -1221,7 +1221,7 @@ namespace PTKidsBITRobot {
     //% kp.defl=0.01
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
-    export function ForwardLINE2(sensor: string, min_speed: number, max_speed: number, kp: number, kd: number) {
+    export function ForwardLINECustom(sensor: string, min_speed: number, max_speed: number, kp: number, kd: number) {
         let set_sensor = [0, 0, 0, 0, 0, 0]
         let on_line_setpoint = 850
         let out_line_setpoint = 500
@@ -1297,14 +1297,14 @@ namespace PTKidsBITRobot {
     //% kp.defl=0.01
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
-    export function ForwardLINE(find: Find_Line, count: number, min_speed: number, max_speed: number, kp: number, kd: number) {
+    export function ForwardLINECount(find: Find_Line, count: number, min_speed: number, max_speed: number, kp: number, kd: number) {
         let on_line_setpoint = 850
         let _count = 0
         while (1) {
             let found = 0
             readAdcAll()
 
-            for (let i = 0; i < Sensor_All_PIN.length; i ++) {
+            for (let i = 0; i < Sensor_All_PIN.length; i++) {
                 if (Line_All[i] > on_line_setpoint) {
                     found += 1
                 }
@@ -1313,7 +1313,7 @@ namespace PTKidsBITRobot {
             if (find == Find_Line.Center) {
                 if (found >= 5) {
                     _count += 1
-                    if (count >= _count) {
+                    if (_count >= count) {
                         motorStop()
                         break
                     }
@@ -1341,7 +1341,7 @@ namespace PTKidsBITRobot {
             else if (find == Find_Line.Left) {
                 if (Line_All[0] > on_line_setpoint && Line_All[1] > on_line_setpoint && Line_All[2] > on_line_setpoint && Line_All[5] < 500) {
                     _count += 1
-                    if (count >= _count) {
+                    if (_count >= count) {
                         motorStop()
                         break
                     }
@@ -1363,7 +1363,7 @@ namespace PTKidsBITRobot {
             else if (find == Find_Line.Right) {
                 if (Line_All[3] > on_line_setpoint && Line_All[4] > on_line_setpoint && Line_All[5] > on_line_setpoint && Line_All[0] < 500) {
                     _count += 1
-                    if (count >= _count) {
+                    if (_count >= count) {
                         motorStop()
                         break
                     }
@@ -1380,6 +1380,94 @@ namespace PTKidsBITRobot {
                             }
                         }
                     }
+                }
+            }
+
+            error = GETPosition() - (((Num_Sensor - 1) * 1000) / 2)
+            P = error
+            D = error - previous_error
+            PD_Value = (kp * P) + (kd * D)
+            previous_error = error
+
+            left_motor_speed = min_speed - PD_Value
+            right_motor_speed = min_speed + PD_Value
+
+            if (left_motor_speed > max_speed) {
+                left_motor_speed = max_speed
+            }
+            else if (left_motor_speed < -max_speed) {
+                left_motor_speed = -max_speed
+            }
+
+            if (right_motor_speed > max_speed) {
+                right_motor_speed = max_speed
+            }
+            else if (right_motor_speed < -max_speed) {
+                right_motor_speed = -max_speed
+            }
+
+            motorGo(left_motor_speed, right_motor_speed)
+        }
+    }
+
+    //% group="Line Follower"
+    /**
+     * Line Follower Forward find Line
+     */
+    //% block="Find %Find_Line|Min Speed %base_speed|Max Speed %max_speed|KP %kp|KD %kd"
+    //% find.defl=Find_Line.Center
+    //% min_speed.defl=30
+    //% max_speed.defl=100
+    //% kp.defl=0.01
+    //% min_speed.min=0 min_speed.max=100
+    //% max_speed.min=0 max_speed.max=100
+    export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
+        let on_line_setpoint = 850
+
+        while (1) {
+            let found = 0
+            readAdcAll()
+
+            for (let i = 0; i < Sensor_All_PIN.length; i++) {
+                if (Line_All[i] > on_line_setpoint) {
+                    found += 1
+                }
+            }
+
+            if (found >= 5) {
+                motorGo(min_speed, min_speed)
+            }
+            else {
+                break
+            }
+        }
+
+        while (1) {
+            let found = 0
+            readAdcAll()
+
+            for (let i = 0; i < Sensor_All_PIN.length; i++) {
+                if (Line_All[i] > on_line_setpoint) {
+                    found += 1
+                }
+            }
+
+            if (find == Find_Line.Center) {
+                if (found >= 5) {
+                    motorStop()
+                    break
+                }
+            }
+            else if (find == Find_Line.Left) {
+                if (Line_All[0] > on_line_setpoint && Line_All[1] > on_line_setpoint && Line_All[2] > on_line_setpoint && Line_All[5] < 500) {
+                    motorStop()
+                    break
+                }
+            }
+            else if (find == Find_Line.Right) {
+                if (Line_All[3] > on_line_setpoint && Line_All[4] > on_line_setpoint && Line_All[5] > on_line_setpoint && Line_All[0] < 500) {
+                    motorStop()
+                    break
                 }
             }
 
