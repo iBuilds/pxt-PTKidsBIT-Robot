@@ -1298,7 +1298,7 @@ namespace PTKidsBITRobot {
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
     export function ForwardLINECount(find: Find_Line, count: number, min_speed: number, max_speed: number, kp: number, kd: number) {
-        let on_line_setpoint = 850
+        let on_line_setpoint = 500
         let _count = 0
         while (1) {
             let found = 0
