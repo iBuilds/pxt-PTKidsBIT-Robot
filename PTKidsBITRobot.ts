@@ -1223,8 +1223,8 @@ namespace PTKidsBITRobot {
     //% max_speed.min=0 max_speed.max=100
     export function ForwardLINECustom(sensor: string, min_speed: number, max_speed: number, kp: number, kd: number) {
         let set_sensor = [0, 0, 0, 0, 0, 0]
-        let on_line_setpoint = 850
-        let out_line_setpoint = 500
+        let on_line_setpoint = 500
+        let out_line_setpoint = 100
         let sensor_interesting = 6
         for (let i = 0; i < Sensor_All_PIN.length; i ++) {
             if (sensor.charAt(i) == '-') {
@@ -1422,7 +1422,7 @@ namespace PTKidsBITRobot {
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
     export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
-        let on_line_setpoint = 850
+        let on_line_setpoint = 500
 
         while (1) {
             let found = 0
