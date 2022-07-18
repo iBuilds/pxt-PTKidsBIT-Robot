@@ -163,13 +163,12 @@ Use PTKidsBITRobot's TurnLINE block for the Robot to turn until it detects a lin
 * Speed is maximun speed between `0` to `100`
 * Sensor is the sensor you want to make the robot stop.
 * Fast Time is the time at the maximum robot speed before a line is detected.
-* Break Time is the time for the Motor to reverse to brake when the Robot stops.
 
 ```blocks
 PTKidsBITRobot.TurnLINE(
     Turn_Line.Left,
     60,
-    2,
+    Turn_Sensor.Center,
     200
 )
 ```
