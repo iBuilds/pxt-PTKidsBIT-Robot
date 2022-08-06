@@ -169,7 +169,7 @@ enum NeoPixelMode {
     RGB_RGB = 3
 }
 
-//% color="#2ECC71" icon="\u2B99"
+//% color="#51cb57" icon="\u2B99"
 namespace PTKidsBITRobot {
     class Strip {
         buf: Buffer;
