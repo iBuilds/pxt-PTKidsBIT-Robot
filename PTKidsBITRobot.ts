@@ -1091,7 +1091,7 @@ namespace PTKidsBITRobot {
         while (1) {
             on_line = 0
             for (let i = 0; i < Sensor_PIN.length; i++) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= 500) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= 900) {
                     on_line += 1;
                 }
             }
