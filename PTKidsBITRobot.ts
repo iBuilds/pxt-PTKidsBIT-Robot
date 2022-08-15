@@ -1078,7 +1078,6 @@ namespace PTKidsBITRobot {
             ADC_Read.ADC6,
             ADC_Read.ADC7
         ]
-        let on_line = 0
         let adc_sensor_pin = sensor - 1
         let error = 0
         let motor_speed = 0
@@ -1089,17 +1088,6 @@ namespace PTKidsBITRobot {
         let _position_max = 0
 
         while (1) {
-            on_line = 0
-            for (let i = 0; i < Sensor_PIN.length; i++) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= 100) {
-                    on_line += 1;
-                }
-            }
-
-            if (on_line == 0) {
-                break
-            }
-
             error = timer - (control.millis() - time)
             motor_speed = error
 
@@ -1111,9 +1099,15 @@ namespace PTKidsBITRobot {
             }
 
             if (turn == Turn_Line.Left) {
+                if (GETPosition() == 0) {
+                    break
+                }
                 motorGo(-motor_speed, motor_speed)
             }
             else if (turn == Turn_Line.Right) {
+                if (GETPosition() == 3000) {
+                    break
+                }
                 motorGo(motor_speed, -motor_speed)
             }
         }
