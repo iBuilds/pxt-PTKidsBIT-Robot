@@ -4,8 +4,8 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "microphone": "*",
-        "ws2812b": "github:microsoft/pxt-ws2812b#v0.1.1"
+        "bluetooth": "*",
+        "microphone": "*"
     },
     "files": [
         "README.md",
