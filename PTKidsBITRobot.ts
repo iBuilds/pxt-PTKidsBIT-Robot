@@ -1028,34 +1028,30 @@ namespace PTKidsBITRobot {
      * Read Distance from Ultrasonic Sensor
      */
     //% block="GETDistance"
-    export function distanceRead(maxCmDistance = 500): number {
+    export function distanceRead(): number {
         let duration
 
-        if (control.millis() - timer > 1000) {
-            pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
-            pins.digitalWritePin(DigitalPin.P1, 0)
-            control.waitMicros(2)
-            pins.digitalWritePin(DigitalPin.P1, 1)
-            control.waitMicros(10)
-            pins.digitalWritePin(DigitalPin.P1, 0)
-            duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, maxCmDistance * 58)
-            distance = Math.idiv(duration, 58)
-        }
-
-        pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
-        pins.digitalWritePin(DigitalPin.P1, 0)
-        control.waitMicros(2)
         pins.digitalWritePin(DigitalPin.P1, 1)
-        control.waitMicros(10)
+        basic.pause(1)
         pins.digitalWritePin(DigitalPin.P1, 0)
-        duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, maxCmDistance * 58)
-        let d = Math.idiv(duration, 58)
-
-        if (d != 0) {
-            distance = (0.1 * d) + (1 - 0.1) * distance
+        if (pins.digitalReadPin(DigitalPin.P2) == 0) {
+            pins.digitalWritePin(DigitalPin.P1, 0)
+            pins.digitalWritePin(DigitalPin.P1, 1)
+            pins.digitalWritePin(DigitalPin.P1, 0)
+            duration = pins.pulseIn(DigitalPin.P2, PulseValue.High, 500 * 58)
+        } else {
+            pins.digitalWritePin(DigitalPin.P1, 0)
+            pins.digitalWritePin(DigitalPin.P1, 1)
+            duration = pins.pulseIn(DigitalPin.P2, PulseValue.Low, 500 * 58)
         }
-        timer = control.millis()
-        return Math.round(distance)
+
+        let x = duration / 39
+
+        if (x <= 0 || x > 500) {
+            return 0
+        }
+
+        return Math.round(x)
     }
 
     //% group="Line Follower"
