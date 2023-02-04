@@ -923,6 +923,14 @@ namespace PTKidsBITRobot {
      * Set LED Color RGB
      */
     //% block="SETColor Red %red|Green %green|Blue %blue|Brightness %brightness"
+    //% red.min=0 red.max=255
+    //% green.min=0 green.max=255
+    //% blue.min=0 blue.max=255
+    //% brightness.min=0 brightness.max=255
+    //% red.defl=0
+    //% green.defl=255
+    //% blue.defl=0
+    //% brightness.defl=100
     export function setColorRGB(red: number, green: number, blue: number, brightness: number): void {
         if (Read_Version == false) {
             let i2cData = pins.createBuffer(2)
@@ -948,6 +956,8 @@ namespace PTKidsBITRobot {
      * Set LED Color
      */
     //% block="SETColor %colors|Brightness %brightness"
+    //% brightness.min=0 brightness.max=255
+    //% brightness.defl=100
     export function setColor(color: NeoPixelColors, brightness: number): void {
         if (Read_Version == false) {
             let i2cData = pins.createBuffer(2)
