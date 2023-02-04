@@ -4,7 +4,9 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "microphone": "*"
+        "radio": "*",
+        "microphone": "*",
+        "ws2812b": "github:microsoft/pxt-ws2812b#v0.1.2"
     },
     "files": [
         "README.md",
