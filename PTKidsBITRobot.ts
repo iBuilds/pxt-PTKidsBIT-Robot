@@ -374,8 +374,8 @@ namespace PTKidsBITRobot {
         //% parts="neopixel"
         show() {
             // only supported in beta
-            // ws2812b.setBufferMode(this.pin, this._mode);
-            // ws2812b.sendBuffer(this.buf, this.pin);
+            ws2812b.setBufferMode(this.pin, this._mode);
+            ws2812b.sendBuffer(this.buf, this.pin);
         }
 
         /**
