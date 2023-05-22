@@ -12,8 +12,10 @@ let Sensor_Right = [5]
 let Num_Sensor = 4
 let LED_PIN = 0
 
-let Version = 1
-let Read_Version = false
+let Servo_Version = 1
+let ADC_Version = 1
+let Read_Servo_Version = false
+let Read_ADC_Version = false
 let PCA = 0x40
 let initI2C = false
 let initLED = false
@@ -138,25 +140,25 @@ enum Turn_Sensor {
 }
 
 enum NeoPixelColors {
-    //% block=red
+    //% block=Red
     Red = 0xFF0000,
-    //% block=orange
-    Orange = 0xFFA500,
-    //% block=yellow
-    Yellow = 0xFFFF00,
-    //% block=green
+    //% block=Green
     Green = 0x00FF00,
-    //% block=blue
+    //% block=Blue
     Blue = 0x0000FF,
-    //% block=indigo
+    //% block=Orange
+    Orange = 0xFFA500,
+    //% block=Yellow
+    Yellow = 0xFFFF00,
+    //% block=Indigo
     Indigo = 0x4b0082,
-    //% block=violet
+    //% block=Violet
     Violet = 0x8a2be2,
-    //% block=purple
+    //% block=Purple
     Purple = 0xFF00FF,
-    //% block=white
+    //% block=White
     White = 0xFFFFFF,
-    //% block=black
+    //% block=Black
     Black = 0x000000
 }
 
@@ -169,8 +171,23 @@ enum NeoPixelMode {
     RGB_RGB = 3
 }
 
+enum LED_Color {
+    //% block=Red
+    Red = 0xFF0000,
+    //% block=Green
+    Green = 0x00FF00,
+    //% block=Blue
+    Blue = 0x0000FF,
+    //% block=Black
+    Black = 0x000000
+}
+
 //% color="#51cb57" icon="\u2B99"
 namespace PTKidsBITRobot {
+    let strip = create(DigitalPin.P8, 7, NeoPixelMode.RGB)
+    let led_brightness = 0
+    let led_color = NeoPixelColors.Red
+    
     class Strip {
         buf: Buffer;
         pin: DigitalPin;
@@ -374,7 +391,7 @@ namespace PTKidsBITRobot {
         //% parts="neopixel"
         show() {
             // only supported in beta
-            ws2812b.setBufferMode(this.pin, this._mode);
+            // ws2812b.setBufferMode(this.pin, this._mode);
             ws2812b.sendBuffer(this.buf, this.pin);
         }
 
@@ -654,6 +671,10 @@ namespace PTKidsBITRobot {
         return color;
     }
 
+    function colors_custom(color: LED_Color): number {
+        return color;
+    }
+
     function packRGB(a: number, b: number, c: number): number {
         return ((a & 0xFF) << 16) | ((b & 0xFF) << 8) | (c & 0xFF);
     }
@@ -811,17 +832,17 @@ namespace PTKidsBITRobot {
         pins.analogWritePin(AnalogPin.P16, 0)
     }
 
-    //% group="Motor Control"
-    /**
-     * Compensate Speed Motor Left and Motor Right
-     */
-    //% block="Compensate Left %Motor_Left|Compensate Right %Motor_Right"
-    //% left.min=-100 left.max=100
-    //% right.min=-100 right.max=100
-    export function motorCompensate(left: number, right: number): void {
-        Compensate_Left = left
-        Compensate_Right = right
-    }
+    // //% group="Motor Control"
+    // /**
+    //  * Compensate Speed Motor Left and Motor Right
+    //  */
+    // //% block="Compensate Left %Motor_Left|Compensate Right %Motor_Right"
+    // //% left.min=-100 left.max=100
+    // //% right.min=-100 right.max=100
+    // export function motorCompensate(left: number, right: number): void {
+    //     Compensate_Left = left
+    //     Compensate_Right = right
+    // }
 
     //% group="Motor Control"
     /**
@@ -829,6 +850,7 @@ namespace PTKidsBITRobot {
      */
     //% block="Spin %_Spin|Speed %Speed"
     //% speed.min=0 speed.max=100
+    //% speed.defl=50
     export function Spin(spin: _Spin, speed: number): void {
         if (spin == _Spin.Left) {
             motorGo(-speed, speed)
@@ -844,6 +866,7 @@ namespace PTKidsBITRobot {
      */
     //% block="Turn %_Turn|Speed %Speed"
     //% speed.min=0 speed.max=100
+    //% speed.defl=50
     export function Turn(turn: _Turn, speed: number): void {
         if (turn == _Turn.Left) {
             motorGo(0, speed)
@@ -860,6 +883,8 @@ namespace PTKidsBITRobot {
     //% block="Motor Left %Motor_Left|Motor Right %Motor_Right"
     //% speed1.min=-100 speed1.max=100
     //% speed2.min=-100 speed2.max=100
+    //% speed1.defl=50
+    //% speed2.defl=50
     export function motorGo(speed1: number, speed2: number): void {
         speed1 = speed1 + Compensate_Left
         speed2 = speed2 + Compensate_Right
@@ -909,6 +934,7 @@ namespace PTKidsBITRobot {
      */
     //% block="motorWrite %Motor_Write|Speed %Speed"
     //% speed.min=-100 speed.max=100
+    //% speed.defl=50
     export function motorWrite(motor: Motor_Write, speed: number): void {
         if (motor == Motor_Write.Motor_Left) {
             motorGo(speed, 0)
@@ -918,11 +944,11 @@ namespace PTKidsBITRobot {
         }
     }
 
-    //% group="LED Control (V2 Only)"
+    //% group="LED Indicator Control"
     /**
      * Set LED Color RGB
      */
-    //% block="SETColor Red %red|Green %green|Blue %blue|Brightness %brightness"
+    //% block="LED Color Red %red|Green %green|Blue %blue|Brightness %brightness"
     //% red.min=0 red.max=255
     //% green.min=0 green.max=255
     //% blue.min=0 blue.max=255
@@ -932,50 +958,26 @@ namespace PTKidsBITRobot {
     //% blue.defl=0
     //% brightness.defl=100
     export function setColorRGB(red: number, green: number, blue: number, brightness: number): void {
-        if (Read_Version == false) {
-            let i2cData = pins.createBuffer(2)
-            i2cData[0] = 0
-            i2cData[1] = 16
-            if (pins.i2cWriteBuffer(64, i2cData, false) == 0) {
-                Version = 2
-            }
-            else {
-                Version = 1
-            }
-            Read_Version = true
-        }
-        if (Version == 2) {
-            let strip = create(DigitalPin.P8, 1, NeoPixelMode.RGB)
-            strip.setBrightness(brightness)
-            strip.showColor(rgb(red, green, blue))
-        }
+        led_brightness = brightness
+        led_color = rgb(red, green, blue)
+        strip.setBrightness(led_brightness)
+        strip.setPixelColor(0, led_color)
+        strip.show()
     }
 
-    //% group="LED Control (V2 Only)"
+    //% group="LED Indicator Control"
     /**
      * Set LED Color
      */
-    //% block="SETColor %colors|Brightness %brightness"
+    //% block="LED Color %colors|Brightness %brightness"
     //% brightness.min=0 brightness.max=255
     //% brightness.defl=100
     export function setColor(color: NeoPixelColors, brightness: number): void {
-        if (Read_Version == false) {
-            let i2cData = pins.createBuffer(2)
-            i2cData[0] = 0
-            i2cData[1] = 16
-            if (pins.i2cWriteBuffer(64, i2cData, false) == 0) {
-                Version = 2
-            }
-            else {
-                Version = 1
-            }
-            Read_Version = true
-        }
-        if (Version == 2) {
-            let strip = create(DigitalPin.P8, 1, NeoPixelMode.RGB)
-            strip.setBrightness(brightness)
-            strip.showColor(colors(color))
-        }
+        led_brightness = brightness
+        led_color = colors(color)
+        strip.setBrightness(led_brightness)
+        strip.setPixelColor(0, colors(color))
+        strip.show()
     }
 
     //% group="Servo Control"
@@ -985,20 +987,20 @@ namespace PTKidsBITRobot {
     //% block="Servo %Servo_Write|Degree %Degree"
     //% degree.min=0 degree.max=180
     export function servoWrite(servo: Servo_Write, degree: number): void {
-        if (Read_Version == false) {
+        if (Read_Servo_Version == false) {
             let i2cData = pins.createBuffer(2)
             i2cData[0] = 0
             i2cData[1] = 16
             if (pins.i2cWriteBuffer(64, i2cData, false) == 0) {
-                Version = 2
+                Servo_Version = 2
             }
             else {
-                Version = 1
+                Servo_Version = 1
             }
-            Read_Version = true
+            Read_Servo_Version = true
         }
         if (servo == Servo_Write.P8) {
-            if (Version == 1) {
+            if (Servo_Version == 1) {
                 Servo_8_Enable = 1
                 Servo_8_Degree = degree
                 pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
@@ -1010,7 +1012,7 @@ namespace PTKidsBITRobot {
             }
         }
         else if (servo == Servo_Write.P12) {
-            if (Version == 1) {
+            if (Servo_Version == 1) {
                 Servo_12_Enable = 1
                 Servo_12_Degree = degree
                 pins.servoWritePin(AnalogPin.P8, Servo_8_Degree)
@@ -1029,8 +1031,29 @@ namespace PTKidsBITRobot {
      */
     //% block="ADCRead %ADC_Read"
     export function ADCRead(ADCRead: ADC_Read): number {
-        pins.i2cWriteNumber(0x48, ADCRead, NumberFormat.UInt8LE, false)
-        return ADCRead = pins.i2cReadNumber(0x48, NumberFormat.UInt16BE, false)
+        if (Read_ADC_Version == false) {
+            let i2cData = pins.createBuffer(1)
+            i2cData[0] = 132
+            if (pins.i2cWriteBuffer(0x49, i2cData, false) == 0) {
+                ADC_Version = 2
+            }
+            else {
+                ADC_Version = 1
+            }
+            Read_ADC_Version = true
+        }
+
+        if (ADC_Version == 1) {
+            pins.i2cWriteNumber(0x48, ADCRead, NumberFormat.UInt8LE, false)
+            return ADCRead = pins.i2cReadNumber(0x48, NumberFormat.UInt16BE, false)
+        }
+        else if (ADC_Version == 2) {
+            pins.i2cWriteNumber(0x49, ADCRead, NumberFormat.UInt8LE, false)
+            return ADCRead = pins.i2cReadNumber(0x49, NumberFormat.UInt8LE, false)
+        }
+        else {
+            return 0
+        }
     }
 
     //% group="Sensor and ADC"
@@ -1057,11 +1080,49 @@ namespace PTKidsBITRobot {
 
         let x = duration / 39
 
-        if (x <= 0 || x > 500) {
-            return 0
+        if (x <= 0 || x > 400) {
+            return 400
         }
 
         return Math.round(x)
+    }
+
+    //% group="Sensor and ADC"
+    /**
+     * Set LED Sensor Color
+     */
+    //% block="Sensor Color 1 $color_1|Sensor Color 2 $color_2|Sensor Color 3 $color_3|Sensor Color 4 $color_4|Sensor Color 5 $color_5|Sensor Color 6 $color_6"
+    export function setSensorColor(color_1: LED_Color, color_2: LED_Color, color_3: LED_Color, color_4: LED_Color, color_5: LED_Color, color_6: LED_Color): void {
+        strip.setBrightness(led_brightness)
+        strip.setPixelColor(0, colors(led_color))
+        strip.show()
+        strip.setBrightness(255)
+        strip.setPixelColor(1, colors_custom(color_1))
+        strip.setPixelColor(2, colors_custom(color_2))
+        strip.setPixelColor(3, colors_custom(color_3))
+        strip.setPixelColor(4, colors_custom(color_4))
+        strip.setPixelColor(5, colors_custom(color_5))
+        strip.setPixelColor(6, colors_custom(color_6))
+        strip.show()
+    }
+
+    //% group="Sensor and ADC"
+    /**
+     * Set LED Sensor Color
+     */
+    //% block="Sensor Color $color"
+    export function setSensorColorAll(color: LED_Color): void {
+        strip.setBrightness(led_brightness)
+        strip.setPixelColor(0, colors(led_color))
+        strip.show()
+        strip.setBrightness(255)
+        strip.setPixelColor(1, colors_custom(color))
+        strip.setPixelColor(2, colors_custom(color))
+        strip.setPixelColor(3, colors_custom(color))
+        strip.setPixelColor(4, colors_custom(color))
+        strip.setPixelColor(5, colors_custom(color))
+        strip.setPixelColor(6, colors_custom(color))
+        strip.show()
     }
 
     //% group="Line Follower"
