@@ -178,6 +178,8 @@ enum LED_Color {
     Green = 0x00FF00,
     //% block=Blue
     Blue = 0x0000FF,
+    //% block=White
+    White = 0xFFFFFF,
     //% block=Black
     Black = 0x000000
 }
@@ -1284,7 +1286,7 @@ namespace PTKidsBITRobot {
     //% max_speed.min=0 max_speed.max=100
     export function ForwardLINECustom(sensor: string, min_speed: number, max_speed: number, kp: number, kd: number) {
         let set_sensor = [0, 0, 0, 0, 0, 0]
-        let on_line_setpoint = 500
+        let on_line_setpoint = 800
         let out_line_setpoint = 100
         let sensor_interesting = 6
         for (let i = 0; i < Sensor_All_PIN.length; i ++) {
@@ -1359,7 +1361,7 @@ namespace PTKidsBITRobot {
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
     export function ForwardLINECount(find: Find_Line, count: number, min_speed: number, max_speed: number, kp: number, kd: number) {
-        let on_line_setpoint = 500
+        let on_line_setpoint = 800
         let _count = 0
         while (1) {
             let found = 0
@@ -1483,7 +1485,7 @@ namespace PTKidsBITRobot {
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
     export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
-        let on_line_setpoint = 500
+        let on_line_setpoint = 800
 
         while (1) {
             let found = 0
