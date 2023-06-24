@@ -1170,6 +1170,7 @@ namespace PTKidsBITRobot {
         let _position = 0
         let _position_min = 0
         let _position_max = 0
+        let out_line_state = 0
 
         while (1) {
             error = timer - (control.millis() - time)
@@ -1183,16 +1184,30 @@ namespace PTKidsBITRobot {
             }
 
             if (turn == Turn_Line.Left) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) >= 800) {
-                    motorStop()
-                    break
+                if (out_line_state == 0) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) >= 800) {
+                        out_line_state = 1
+                    }
+                }
+                if (out_line_state == 1) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) <= 200) {
+                        motorStop()
+                        break
+                    }
                 }
                 motorGo(-motor_speed, motor_speed)
             }
             else if (turn == Turn_Line.Right) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) >= 800) {
-                    motorStop()
-                    break
+                if (out_line_state == 0) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) >= 800) {
+                        out_line_state = 1
+                    }
+                }
+                if (out_line_state == 1) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) <= 200) {
+                        motorStop()
+                        break
+                    }
                 }
                 motorGo(motor_speed, -motor_speed)
             }
