@@ -1191,7 +1191,6 @@ namespace PTKidsBITRobot {
                 }
                 if (out_line_state == 1) {
                     if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) <= 200) {
-                        motorStop()
                         break
                     }
                 }
@@ -1205,7 +1204,6 @@ namespace PTKidsBITRobot {
                 }
                 if (out_line_state == 1) {
                     if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) <= 200) {
-                        motorStop()
                         break
                     }
                 }
