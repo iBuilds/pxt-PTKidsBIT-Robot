@@ -139,6 +139,21 @@ enum Turn_Sensor {
     ADC4
 }
 
+enum Turn_ADC {
+    //% block="ADC0"
+    ADC0 = 0,
+    //% block="ADC1"
+    ADC1 = 1,
+    //% block="ADC2"
+    ADC2 = 2,
+    //% block="ADC3"
+    ADC3 = 3,
+    //% block="ADC4"
+    ADC4 = 4,
+    //% block="ADC5"
+    ADC5 = 5
+}
+
 enum NeoPixelColors {
     //% block=Red
     Red = 0xFF0000,
@@ -1136,7 +1151,7 @@ namespace PTKidsBITRobot {
     //% time.shadow="timePicker"
     //% break_delay.shadow="timePicker"
     //% time.defl=200
-    export function TurnLINE(turn: Turn_Line, speed: number, sensor: Turn_Sensor, time: number) {
+    export function TurnLINE(turn: Turn_Line, speed: number, sensor: Turn_ADC, time: number) {
         let ADC_PIN = [
             ADC_Read.ADC0,
             ADC_Read.ADC1,
@@ -1147,7 +1162,7 @@ namespace PTKidsBITRobot {
             ADC_Read.ADC6,
             ADC_Read.ADC7
         ]
-        let adc_sensor_pin = sensor - 1
+        let on_line_sensor = [0, 0, 0, 0, 0, 0]
         let error = 0
         let motor_speed = 0
         let motor_slow = 20
@@ -1168,46 +1183,31 @@ namespace PTKidsBITRobot {
             }
 
             if (turn == Turn_Line.Left) {
-                if (GETPosition() == 0) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) >= 800) {
+                    motorStop()
                     break
                 }
                 motorGo(-motor_speed, motor_speed)
             }
             else if (turn == Turn_Line.Right) {
-                if (GETPosition() == 3000) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) >= 800) {
+                    motorStop()
                     break
                 }
                 motorGo(motor_speed, -motor_speed)
             }
         }
         while (1) {
-            // if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[adc_sensor_pin]]), Color_Line[adc_sensor_pin], Color_Background[adc_sensor_pin], 1000, 0)) >= 800) {
-            //     motorStop()
-            //     break
-            // }
-            if (sensor == Turn_Sensor.Center) {
-                _position_min = 1250
-                _position_max = 1750
-            }
-            else if (sensor == Turn_Sensor.ADC1) {
-                _position_min = 2500
-                _position_max = 3000
-            }
-            else if (sensor == Turn_Sensor.ADC2) {
-                _position_min = 1500
-                _position_max = 2000
-            }
-            else if (sensor == Turn_Sensor.ADC3) {
-                _position_min = 1000
-                _position_max = 1500
-            }
-            else if (sensor == Turn_Sensor.ADC4) {
-                _position_min = 0
-                _position_max = 500
+            for (let i = 0; i < on_line_sensor.length; i ++) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= 800) {
+                    on_line_sensor[i] = 1
+                }
+                else {
+                    on_line_sensor[i] = 0
+                }
             }
 
-            _position = GETPosition()
-            if (_position > _position_min && _position < _position_max) {
+            if (on_line_sensor[sensor] == 1) {
                 motorStop()
                 break
             }
@@ -1651,6 +1651,50 @@ namespace PTKidsBITRobot {
         }
         Last_Position = Average / Sum_Value;
         return Math.round(((Num_Sensor - 1) * 1000) - Last_Position)
+    }
+
+    //% group="Line Follower"
+    /**
+     * Print Sensor Value
+     */
+    //% block="PrintSensorValue"
+    export function PrintSensorValue() {
+        let ADC_PIN = [
+            ADC_Read.ADC0,
+            ADC_Read.ADC1,
+            ADC_Read.ADC2,
+            ADC_Read.ADC3,
+            ADC_Read.ADC4,
+            ADC_Read.ADC5
+        ]
+
+        let sensor_value = "Sensor Value:"
+        for (let i = 0; i < ADC_PIN.length; i++) {
+            sensor_value += " " + ADCRead(ADC_PIN[i])
+        }
+        serial.writeLine("" + sensor_value)
+    }
+
+    //% group="Line Follower"
+    /**
+     * Set Value Sensor
+     */
+    //% block="SETColorLine $line|Ground $ground"
+    export function ValueSensorSET(line: number[], ground: number[]): void {
+        Color_Line_Left[0] = line[0]
+        Color_Line[0] = line[1]
+        Color_Line[1] = line[2]
+        Color_Line[2] = line[3]
+        Color_Line[3] = line[4]
+        Color_Line_Right[5] = line[5]
+        Color_Background_Left[0] = ground[0]
+        Color_Background[0] = ground[1]
+        Color_Background[1] = ground[2]
+        Color_Background[2] = ground[3]
+        Color_Background[3] = ground[4]
+        Color_Background_Right[5] = ground[5]
+        Color_Line_All = line
+        Color_Background_All = ground
     }
 
     //% group="Line Follower"
