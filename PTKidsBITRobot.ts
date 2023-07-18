@@ -1514,6 +1514,8 @@ namespace PTKidsBITRobot {
                 motorGo(min_speed, min_speed)
             }
             else {
+                motorGo(50, 50)
+                basic.pause(20)
                 break
             }
         }
@@ -1530,18 +1532,24 @@ namespace PTKidsBITRobot {
 
             if (find == Find_Line.Center) {
                 if (found >= 5) {
+                    motorGo(50, 50)
+                    basic.pause(20)
                     motorStop()
                     break
                 }
             }
             else if (find == Find_Line.Left) {
                 if (Line_All[0] > on_line_setpoint && Line_All[1] > on_line_setpoint && Line_All[2] > on_line_setpoint && Line_All[5] < 500) {
+                    motorGo(50, 50)
+                    basic.pause(20)
                     motorStop()
                     break
                 }
             }
             else if (find == Find_Line.Right) {
                 if (Line_All[3] > on_line_setpoint && Line_All[4] > on_line_setpoint && Line_All[5] > on_line_setpoint && Line_All[0] < 500) {
+                    motorGo(50, 50)
+                    basic.pause(20)
                     motorStop()
                     break
                 }
@@ -1648,7 +1656,7 @@ namespace PTKidsBITRobot {
                     Value_Sensor = 1000
                 }
             }
-            if (Value_Sensor > 200) {
+            if (Value_Sensor > 500) {
                 ON_Line = 1;
             }
             Average += Value_Sensor * (i * 1000)
