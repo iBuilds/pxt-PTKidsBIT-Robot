@@ -1171,6 +1171,17 @@ namespace PTKidsBITRobot {
         let _position_min = 0
         let _position_max = 0
         let out_line_state = 0
+        let line_offset = 0
+        let floor_offset = 0
+
+        if (ADC_Version == 1) {
+            line_offset = 200
+            floor_offset = 200
+        }
+        else if (ADC_Version == 2) {
+            line_offset = 800
+            floor_offset = 200
+        }
 
         while (1) {
             error = timer - (control.millis() - time)
@@ -1185,12 +1196,12 @@ namespace PTKidsBITRobot {
 
             if (turn == Turn_Line.Left) {
                 if (out_line_state == 0) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) >= 800) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) >= line_offset) {
                         out_line_state = 1
                     }
                 }
                 if (out_line_state == 1) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) <= 200) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) <= floor_offset) {
                         break
                     }
                 }
@@ -1198,12 +1209,12 @@ namespace PTKidsBITRobot {
             }
             else if (turn == Turn_Line.Right) {
                 if (out_line_state == 0) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) >= 800) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) >= line_offset) {
                         out_line_state = 1
                     }
                 }
                 if (out_line_state == 1) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) <= 200) {
+                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) <= floor_offset) {
                         break
                     }
                 }
@@ -1212,7 +1223,7 @@ namespace PTKidsBITRobot {
         }
         while (1) {
             for (let i = 0; i < on_line_sensor.length; i ++) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= 800) {
+                if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= line_offset) {
                     on_line_sensor[i] = 1
                 }
                 else {
@@ -1656,9 +1667,18 @@ namespace PTKidsBITRobot {
                     Value_Sensor = 1000
                 }
             }
-            if (Value_Sensor > 500) {
-                ON_Line = 1;
+
+            if (ADC_Version == 1) {
+                if (Value_Sensor > 200) {
+                    ON_Line = 1;
+                }
             }
+            else if (ADC_Version == 2) {
+                if (Value_Sensor > 500) {
+                    ON_Line = 1;
+                }
+            }
+
             Average += Value_Sensor * (i * 1000)
             Sum_Value += Value_Sensor
         }
