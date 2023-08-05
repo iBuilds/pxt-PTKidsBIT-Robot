@@ -791,6 +791,7 @@ namespace PTKidsBITRobot {
                 }
                 Line_All[i] = Value_Sensor
             }
+            control.waitMicros(10)
         }
     }
 
