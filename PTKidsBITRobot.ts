@@ -791,7 +791,6 @@ namespace PTKidsBITRobot {
                 }
                 Line_All[i] = Value_Sensor
             }
-            control.waitMicros(10)
         }
     }
 
@@ -1062,11 +1061,15 @@ namespace PTKidsBITRobot {
         }
 
         if (ADC_Version == 1) {
+            control.waitMicros(2000)
             pins.i2cWriteNumber(0x48, ADCRead, NumberFormat.UInt8LE, false)
+            control.waitMicros(2000)
             return ADCRead = pins.i2cReadNumber(0x48, NumberFormat.UInt16BE, false)
         }
         else if (ADC_Version == 2) {
+            control.waitMicros(2000)
             pins.i2cWriteNumber(0x49, ADCRead, NumberFormat.UInt8LE, false)
+            control.waitMicros(2000)
             return ADCRead = pins.i2cReadNumber(0x49, NumberFormat.UInt8LE, false)
         }
         else {
