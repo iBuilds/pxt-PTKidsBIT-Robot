@@ -1513,7 +1513,7 @@ namespace PTKidsBITRobot {
     //% min_speed.min=0 min_speed.max=100
     //% max_speed.min=0 max_speed.max=100
     export function ForwardLINE(find: Find_Line, min_speed: number, max_speed: number, kp: number, kd: number) {
-        let on_line_setpoint = 800
+        let on_line_setpoint = 500
 
         while (1) {
             let found = 0
