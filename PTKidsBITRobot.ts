@@ -193,8 +193,6 @@ enum LED_Color {
     Green = 0x00FF00,
     //% block=Blue
     Blue = 0x0000FF,
-    //% block=White
-    White = 0xFFFFFF,
     //% block=Black
     Black = 0x000000
 }
