@@ -975,7 +975,7 @@ namespace PTKidsBITRobot {
     //% blue.defl=0
     //% brightness.defl=100
     export function setColorRGB(red: number, green: number, blue: number, brightness: number): void {
-        ADC_Version = 1
+        ADC_Version = 2
         led_brightness = brightness
         led_color = rgb(red, green, blue)
         strip.setBrightness(led_brightness)
