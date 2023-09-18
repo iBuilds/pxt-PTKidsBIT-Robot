@@ -1158,36 +1158,18 @@ namespace PTKidsBITRobot {
     //% break_delay.shadow="timePicker"
     //% time.defl=200
     export function TurnLINE(turn: Turn_Line, speed: number, sensor: Turn_ADC, time: number) {
-        let ADC_PIN = [
-            ADC_Read.ADC0,
-            ADC_Read.ADC1,
-            ADC_Read.ADC2,
-            ADC_Read.ADC3,
-            ADC_Read.ADC4,
-            ADC_Read.ADC5,
-            ADC_Read.ADC6,
-            ADC_Read.ADC7
-        ]
-
-        let on_line_sensor = [0, 0, 0, 0, 0, 0]
         let error = 0
         let motor_speed = 0
         let motor_slow = 20
         let timer = control.millis()
         let _position = 0
-        let _position_min = 0
-        let _position_max = 0
-        let line_offset = 0
-        let floor_offset = 0
 
-        if (ADC_Version == 1) {
-            line_offset = 200
-            floor_offset = 200
-        }
-        else if (ADC_Version == 2) {
-            line_offset = 800
-            floor_offset = 200
-        }
+        if (sensor == Turn_ADC.ADC0) _position = 0
+        else if (sensor == Turn_ADC.ADC1) _position = 3000
+        else if (sensor == Turn_ADC.ADC2) _position = 2400
+        else if (sensor == Turn_ADC.ADC3) _position = 1800
+        else if (sensor == Turn_ADC.ADC4) _position = 1200
+        else if (sensor == Turn_ADC.ADC5) _position = 600
 
         while (1) {
             error = timer - (control.millis() - time)
@@ -1210,36 +1192,26 @@ namespace PTKidsBITRobot {
             }
         }
         while (1) {
-            for (let i = 0; i < on_line_sensor.length; i ++) {
-                if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[i]]), Color_Line_All[i], Color_Background_All[i], 1000, 0)) >= line_offset) {
-                    on_line_sensor[i] = 1
-                }
-                else {
-                    on_line_sensor[i] = 0
-                }
-            }
-
-            if (on_line_sensor[sensor] == 1) {
+            if (GETPosition() >= _position - 300 && GETPosition() <= _position + 300) {
                 motorStop()
                 break
             }
-            else {
-                error = timer - (control.millis() - time)
-                motor_speed = error
 
-                if (motor_speed > speed) {
-                    motor_speed = speed
-                }
-                else if (motor_speed < 0) {
-                    motor_speed = motor_slow
-                }
+            error = timer - (control.millis() - time)
+            motor_speed = error
 
-                if (turn == Turn_Line.Left) {
-                    motorGo(-motor_speed, motor_speed)
-                }
-                else if (turn == Turn_Line.Right) {
-                    motorGo(motor_speed, -motor_speed)
-                }
+            if (motor_speed > speed) {
+                motor_speed = speed
+            }
+            else if (motor_speed < 0) {
+                motor_speed = motor_slow
+            }
+
+            if (turn == Turn_Line.Left) {
+                motorGo(-motor_speed, motor_speed)
+            }
+            else if (turn == Turn_Line.Right) {
+                motorGo(motor_speed, -motor_speed)
             }
         }
     }
@@ -1846,6 +1818,8 @@ namespace PTKidsBITRobot {
             pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
         }
         basic.pause(200)
+
+        serial.writeLine("------------------------------------")
 
         let sensor_value = "Color Line:"
         for (let i = 0; i < Color_Line_All.length; i++) {
