@@ -975,6 +975,7 @@ namespace PTKidsBITRobot {
     //% blue.defl=0
     //% brightness.defl=100
     export function setColorRGB(red: number, green: number, blue: number, brightness: number): void {
+        ADC_Version = 1
         led_brightness = brightness
         led_color = rgb(red, green, blue)
         strip.setBrightness(led_brightness)
@@ -990,6 +991,7 @@ namespace PTKidsBITRobot {
     //% brightness.min=0 brightness.max=255
     //% brightness.defl=100
     export function setColor(color: NeoPixelColors, brightness: number): void {
+        ADC_Version = 2
         led_brightness = brightness
         led_color = colors(color)
         strip.setBrightness(led_brightness)
@@ -1114,6 +1116,7 @@ namespace PTKidsBITRobot {
      */
     //% block="Sensor Color 1 $color_1|Sensor Color 2 $color_2|Sensor Color 3 $color_3|Sensor Color 4 $color_4|Sensor Color 5 $color_5|Sensor Color 6 $color_6"
     export function setSensorColor(color_1: LED_Color, color_2: LED_Color, color_3: LED_Color, color_4: LED_Color, color_5: LED_Color, color_6: LED_Color): void {
+        ADC_Version = 2
         strip.setBrightness(led_brightness)
         strip.setPixelColor(0, colors(led_color))
         strip.show()
@@ -1133,6 +1136,7 @@ namespace PTKidsBITRobot {
      */
     //% block="Sensor Color $color"
     export function setSensorColorAll(color: LED_Color): void {
+        ADC_Version = 2
         strip.setBrightness(led_brightness)
         strip.setPixelColor(0, colors(led_color))
         strip.show()
@@ -1166,6 +1170,7 @@ namespace PTKidsBITRobot {
             ADC_Read.ADC6,
             ADC_Read.ADC7
         ]
+
         let on_line_sensor = [0, 0, 0, 0, 0, 0]
         let error = 0
         let motor_speed = 0
@@ -1174,7 +1179,6 @@ namespace PTKidsBITRobot {
         let _position = 0
         let _position_min = 0
         let _position_max = 0
-        let out_line_state = 0
         let line_offset = 0
         let floor_offset = 0
 
@@ -1199,29 +1203,11 @@ namespace PTKidsBITRobot {
             }
 
             if (turn == Turn_Line.Left) {
-                if (out_line_state == 0) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) >= line_offset) {
-                        out_line_state = 1
-                    }
-                }
-                if (out_line_state == 1) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[5]]), Color_Line_All[5], Color_Background_All[5], 1000, 0)) <= floor_offset) {
-                        break
-                    }
-                }
+                if (GETPosition() <= 500) break
                 motorGo(-motor_speed, motor_speed)
             }
             else if (turn == Turn_Line.Right) {
-                if (out_line_state == 0) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) >= line_offset) {
-                        out_line_state = 1
-                    }
-                }
-                if (out_line_state == 1) {
-                    if ((pins.map(ADCRead(ADC_PIN[Sensor_All_PIN[0]]), Color_Line_All[0], Color_Background_All[0], 1000, 0)) <= floor_offset) {
-                        break
-                    }
-                }
+                if (GETPosition() >= 2500) break
                 motorGo(motor_speed, -motor_speed)
             }
         }
@@ -1726,6 +1712,17 @@ namespace PTKidsBITRobot {
      */
     //% block="SETColorLine $line|Ground $ground"
     export function ValueSensorSET(line: number[], ground: number[]): void {
+        if (Read_ADC_Version == false) {
+            let i2cData = pins.createBuffer(1)
+            i2cData[0] = 132
+            if (pins.i2cWriteBuffer(0x49, i2cData, false) == 0) {
+                ADC_Version = 2
+            }
+            else {
+                ADC_Version = 1
+            }
+            Read_ADC_Version = true
+        }
         Color_Line_Left[0] = line[0]
         Color_Line[0] = line[1]
         Color_Line[1] = line[2]
@@ -1748,6 +1745,7 @@ namespace PTKidsBITRobot {
      */
     //% block="SensorCalibrate $adc_pin"
     export function SensorCalibrate(): void {
+        serial.writeLine("")
         let ADC_PIN = [
             ADC_Read.ADC0,
             ADC_Read.ADC1,
@@ -1850,5 +1848,17 @@ namespace PTKidsBITRobot {
             pins.servoWritePin(AnalogPin.P12, Servo_12_Degree)
         }
         basic.pause(200)
+
+        let sensor_value = "Color Line:"
+        for (let i = 0; i < Color_Line_All.length; i++) {
+            sensor_value += " " + Math.round(Color_Line_All[i])
+        }
+        serial.writeLine("" + sensor_value)
+
+        sensor_value = "Color Ground:"
+        for (let i = 0; i < Color_Background_All.length; i++) {
+            sensor_value += " " + Math.round(Color_Background_All[i])
+        }
+        serial.writeLine("" + sensor_value)
     }
 }
