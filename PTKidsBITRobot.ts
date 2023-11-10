@@ -1654,27 +1654,27 @@ namespace PTKidsBITRobot {
         return Math.round(((Num_Sensor - 1) * 1000) - Last_Position)
     }
 
-    //% group="Line Follower"
-    /**
-     * Print Sensor Value
-     */
-    //% block="PrintSensorValue"
-    export function PrintSensorValue() {
-        let ADC_PIN = [
-            ADC_Read.ADC0,
-            ADC_Read.ADC1,
-            ADC_Read.ADC2,
-            ADC_Read.ADC3,
-            ADC_Read.ADC4,
-            ADC_Read.ADC5
-        ]
+    // //% group="Line Follower"
+    // /**
+    //  * Print Sensor Value
+    //  */
+    // //% block="PrintSensorValue"
+    // export function PrintSensorValue() {
+    //     let ADC_PIN = [
+    //         ADC_Read.ADC0,
+    //         ADC_Read.ADC1,
+    //         ADC_Read.ADC2,
+    //         ADC_Read.ADC3,
+    //         ADC_Read.ADC4,
+    //         ADC_Read.ADC5
+    //     ]
 
-        let sensor_value = "Sensor Value:"
-        for (let i = 0; i < ADC_PIN.length; i++) {
-            sensor_value += " " + ADCRead(ADC_PIN[i])
-        }
-        serial.writeLine("" + sensor_value)
-    }
+    //     let sensor_value = "Sensor Value:"
+    //     for (let i = 0; i < ADC_PIN.length; i++) {
+    //         sensor_value += " " + ADCRead(ADC_PIN[i])
+    //     }
+    //     serial.writeLine("" + sensor_value)
+    // }
 
     //% group="Line Follower"
     /**
